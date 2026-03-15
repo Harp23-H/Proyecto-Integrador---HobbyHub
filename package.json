@@ -3,13 +3,11 @@
   "version": "1.0.0",
   "description": "Repositorio del Proyecto Integrador de la pagina web HobbyHub",
   "main": "index.js",
-
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
     "tw:watch": "npx tailwindcss -i ./src/input.css -o ./public/css/output.css --watch"
-  
-},
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Harp23-H/Proyecto-Integrador---HobbyHub.git"
