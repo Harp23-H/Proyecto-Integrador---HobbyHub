@@ -17,7 +17,7 @@ El proyecto estará basado en una Arquitectura SOA (Service Oriented Architectur
 |No.|Descripción|Potenciador|Estatus|
 |---|---|---|---|
 |1.| Configuración inicial del Proyecto (NodeJS + Tailwind) | 2 | ✅ Finalizado. |
-|2.| Routing, Layouts y Template Engines | 5 | Pendiente |
+|2.| Routing, Layouts y Template Engines | 5 | ✅ Finalizado. |
 |3.| Creación de páginas de Login y Registro de Usuarios | 6 | Pendiente |
 |4.| ORM's, Base de Datos y Modelo de Usuarios | 7 | Pendiente |
 |5.| **Autenticación con Redes Sociales** (Google, Facebook, Apple) | 20 | Pendiente |
