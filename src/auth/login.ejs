@@ -1,0 +1,127 @@
+<%- contentFor('styles') %>
+<style>
+    .social-btn {
+        transition: all 0.2s ease;
+    }
+    .social-btn:hover {
+        transform: translateY(-1px);
+    }
+</style>
+
+<div class="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <!-- Logo o título -->
+        <div>
+            <h2 class="text-center text-3xl font-extrabold text-[#1E1E1E]">
+                Bienvenido a HobbyHub
+            </h2>
+            <p class="mt-2 text-center text-sm text-[#1E1E1E]/70">
+                Conecta con personas que comparten tus mismos hobbies
+            </p>
+        </div>
+        
+        <!-- Botones de autenticación social (exactamente como en el PDF) -->
+        <div class="space-y-3">
+            <!-- Google -->
+            <button class="social-btn w-full flex items-center justify-center px-4 py-3 border border-[#D9D9D9] rounded-lg bg-white hover:bg-gray-50 transition">
+                <svg class="w-5 h-5 mr-3" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                <span class="text-[#1E1E1E] font-medium">Continuar con Google</span>
+            </button>
+            
+            <!-- Email -->
+            <button class="social-btn w-full flex items-center justify-center px-4 py-3 border border-[#D9D9D9] rounded-lg bg-white hover:bg-gray-50 transition">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <span class="text-[#1E1E1E] font-medium">Continuar con Email</span>
+            </button>
+            
+            <!-- Apple -->
+            <button class="social-btn w-full flex items-center justify-center px-4 py-3 border border-[#D9D9D9] rounded-lg bg-black text-white hover:bg-gray-900 transition">
+                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.69 3.56-1.702"/>
+                </svg>
+                <span class="font-medium">Continuar con Apple</span>
+            </button>
+            
+            <!-- X (Twitter) -->
+            <button class="social-btn w-full flex items-center justify-center px-4 py-3 border border-[#D9D9D9] rounded-lg bg-black text-white hover:bg-gray-900 transition">
+                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+                <span class="font-medium">Continuar con X</span>
+            </button>
+        </div>
+        
+        <!-- Divisor -->
+        <div class="relative my-6">
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-[#D9D9D9]"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+                <span class="px-4 bg-[#FFF8E7] text-[#1E1E1E]/60">O continúa con email</span>
+            </div>
+        </div>
+        
+        <!-- Formulario tradicional (exactamente como en el PDF) -->
+        <form class="mt-8 space-y-6" action="/auth/login" method="POST">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Ingresa tu Correo Electrónico:
+                    </label>
+                    <input 
+                        type="email" 
+                        name="email"
+                        required
+                        class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#FB923C] focus:border-transparent outline-none transition"
+                        placeholder="ejemplo@correo.com"
+                    >
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Ingresa tu Contraseña:
+                    </label>
+                    <input 
+                        type="password" 
+                        name="password"
+                        required
+                        class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#FB923C] focus:border-transparent outline-none transition"
+                        placeholder="••••••••"
+                    >
+                </div>
+            </div>
+            
+            <!-- Link de olvidé contraseña (opcional, no está en PDF pero es buena práctica) -->
+            <div class="flex items-center justify-end">
+                <a href="#" class="text-sm text-[#FB923C] hover:text-[#FB923C]/80">
+                    ¿Olvidaste tu contraseña?
+                </a>
+            </div>
+            
+            <button 
+                type="submit" 
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-[#FB923C] hover:bg-[#FB923C]/90 font-medium text-lg transition transform hover:scale-[1.02]"
+            >
+                Iniciar Sesión
+            </button>
+            
+            <p class="text-center text-sm text-[#1E1E1E]">
+                ¿No tienes una cuenta? 
+                <a href="/auth/register" class="font-medium text-[#FB923C] hover:text-[#FB923C]/80">
+                    Crea una
+                </a>
+            </p>
+        </form>
+        
+        <!-- Términos y condiciones -->
+        <p class="text-xs text-center text-[#1E1E1E]/50">
+            Al continuar, aceptas nuestros Términos de Servicio y Política de Privacidad
+        </p>
+    </div>
+</div>

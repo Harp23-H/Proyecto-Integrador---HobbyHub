@@ -1,0 +1,158 @@
+<div class="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <h2 class="text-center text-3xl font-extrabold text-[#1E1E1E]">
+                Crea tu cuenta
+            </h2>
+            <p class="mt-2 text-center text-sm text-[#1E1E1E]/70">
+                Únete a la comunidad de HobbyHub
+            </p>
+        </div>
+        
+        <form class="mt-8 space-y-6" action="/auth/register" method="POST">
+            <div class="space-y-4">
+                <!-- Nombre(s) y Apellidos en grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                            Nombre(s)
+                        </label>
+                        <input 
+                            type="text" 
+                            name="nombres"
+                            required
+                            class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#FB923C] focus:border-transparent outline-none transition"
+                            placeholder="Juan"
+                        >
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                            Apellidos
+                        </label>
+                        <input 
+                            type="text" 
+                            name="apellidos"
+                            required
+                            class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#FB923C] focus:border-transparent outline-none transition"
+                            placeholder="Pérez"
+                        >
+                    </div>
+                </div>
+                
+                <!-- Fecha de Nacimiento y Edad -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                            Fecha de Nacimiento
+                        </label>
+                        <input 
+                            type="date" 
+                            name="fechaNacimiento"
+                            id="fechaNacimiento"
+                            required
+                            class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#FB923C] focus:border-transparent outline-none transition"
+                        >
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                            Edad
+                        </label>
+                        <input 
+                            type="number" 
+                            name="edad"
+                            id="edad"
+                            readonly
+                            class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg bg-gray-50 text-[#1E1E1E]"
+                            placeholder="0"
+                        >
+                    </div>
+                </div>
+                
+                <!-- Correo Electrónico -->
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Correo Electrónico
+                    </label>
+                    <input 
+                        type="email" 
+                        name="email"
+                        required
+                        class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#FB923C] focus:border-transparent outline-none transition"
+                        placeholder="ejemplo@correo.com"
+                    >
+                </div>
+                
+                <!-- Nombre de usuario (adicional, no está en PDF pero es necesario) -->
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Nombre de Usuario
+                    </label>
+                    <input 
+                        type="text" 
+                        name="username"
+                        required
+                        class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#FB923C] focus:border-transparent outline-none transition"
+                        placeholder="@usuario"
+                    >
+                </div>
+                
+                <!-- Contraseñas -->
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Nueva Contraseña
+                    </label>
+                    <input 
+                        type="password" 
+                        name="password"
+                        required
+                        class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#FB923C] focus:border-transparent outline-none transition"
+                        placeholder="••••••••"
+                    >
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Confirma tu Contraseña
+                    </label>
+                    <input 
+                        type="password" 
+                        name="confirmPassword"
+                        required
+                        class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#FB923C] focus:border-transparent outline-none transition"
+                        placeholder="••••••••"
+                    >
+                </div>
+            </div>
+            
+            <button 
+                type="submit" 
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-[#FB923C] hover:bg-[#FB923C]/90 font-medium text-lg transition transform hover:scale-[1.02]"
+            >
+                Registrarse
+            </button>
+            
+            <p class="text-center text-sm text-[#1E1E1E]">
+                ¿Ya tienes una cuenta? 
+                <a href="/auth/login" class="font-medium text-[#FB923C] hover:text-[#FB923C]/80">
+                    Inicia Sesión
+                </a>
+            </p>
+        </form>
+    </div>
+</div>
+
+<!-- Script para calcular edad automáticamente -->
+<script>
+document.getElementById('fechaNacimiento').addEventListener('change', function(e) {
+    const birthDate = new Date(e.target.value);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    
+    document.getElementById('edad').value = age;
+});
+</script>
