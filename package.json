@@ -1,0 +1,21 @@
+{
+  "name": "proyecto-integrador---hobbyhub",
+  "version": "1.0.0",
+  "description": "Repositorio del Proyecto Integrador de la pagina web HobbyHub",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Harp23-H/Proyecto-Integrador---HobbyHub.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Harp23-H/Proyecto-Integrador---HobbyHub/issues"
+  },
+  "homepage": "https://github.com/Harp23-H/Proyecto-Integrador---HobbyHub#readme"
+}
