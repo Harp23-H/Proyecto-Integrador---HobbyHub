@@ -1,51 +1,99 @@
-<div class="max-w-7xl mx-auto">
-    <h1 class="text-3xl font-bold text-[#1E1E1E] mb-8">Explora por categoría</h1>
-    
-    <!-- Grid de categorías -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Categoría 1 -->
-        <div class="bg-white rounded-lg shadow-sm border border-[#D9D9D9] overflow-hidden hover:shadow-md transition">
-            <div class="h-48 bg-gradient-to-br from-[#FB923C] to-[#FFF59D]"></div>
-            <div class="p-4">
-                <h3 class="font-semibold text-[#1E1E1E]">Pintura de Miniaturas</h3>
-                <p class="text-sm text-[#1E1E1E]/70 mt-1">Warhammer, D&D, modelos</p>
+<div class="max-w-6xl mx-auto">
+    <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Sidebar con tags populares -->
+        <div class="lg:w-80">
+            <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-4 sticky top-4">
+                <h3 class="font-semibold text-[#1E1E1E] mb-3">Tendencias</h3>
+                <div class="flex flex-wrap gap-2">
+                    <% if (popularTags && popularTags.length > 0) { %>
+                        <% popularTags.forEach(tag => { %>
+                            <a href="/feed/tag/<%= tag.tag %>" 
+                               class="bg-[#FFF59D] text-[#1E1E1E] px-3 py-1 rounded-full text-sm hover:bg-[#FFF59D]/80 transition">
+                                #<%= tag.tag %> (<%= tag.count %>)
+                            </a>
+                        <% }) %>
+                    <% } else { %>
+                        <p class="text-sm text-[#1E1E1E]/60">No hay tags populares aún</p>
+                    <% } %>
+                </div>
             </div>
         </div>
         
-        <!-- Categoría 2 -->
-        <div class="bg-white rounded-lg shadow-sm border border-[#D9D9D9] overflow-hidden hover:shadow-md transition">
-            <div class="h-48 bg-gradient-to-br from-[#1E1E1E] to-[#FB923C]"></div>
-            <div class="p-4">
-                <h3 class="font-semibold text-[#1E1E1E]">Murales & Graffiti</h3>
-                <p class="text-sm text-[#1E1E1E]/70 mt-1">Arte urbano, sprays</p>
+        <!-- Feed de exploración -->
+        <div class="flex-1 space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-4">
+                <h1 class="text-2xl font-bold text-[#1E1E1E]">Explorar</h1>
+                <p class="text-sm text-[#1E1E1E]/60">Descubre los hobbies más recientes</p>
+            </div>
+            
+            <!-- Grid de categorías (Página 5 del PDF) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Categoría 1 -->
+                <div class="bg-gradient-to-br from-[#FB923C] to-[#FFF59D] rounded-xl p-6 text-white">
+                    <h3 class="text-xl font-bold">🎨 Pintura de Miniaturas</h3>
+                    <p class="text-sm opacity-90 mt-1">Warhammer, D&D, modelos</p>
+                </div>
+                
+                <!-- Categoría 2 -->
+                <div class="bg-gradient-to-br from-[#1E1E1E] to-[#FB923C] rounded-xl p-6 text-white">
+                    <h3 class="text-xl font-bold">🎨 Murales & Graffiti</h3>
+                    <p class="text-sm opacity-90 mt-1">Arte urbano, sprays</p>
+                </div>
+                
+                <!-- Categoría 3 -->
+                <div class="bg-gradient-to-br from-[#FFF59D] to-[#D9D9D9] rounded-xl p-6 text-[#1E1E1E]">
+                    <h3 class="text-xl font-bold">🎵 Restauración de Vinilos</h3>
+                    <p class="text-sm opacity-90 mt-1">Música, tornamesas</p>
+                </div>
+                
+                <!-- Categoría 4 -->
+                <div class="bg-gradient-to-br from-[#FB923C] to-[#1E1E1E] rounded-xl p-6 text-white">
+                    <h3 class="text-xl font-bold">⌨️ Keycaps Mecánicos</h3>
+                    <p class="text-sm opacity-90 mt-1">Teclados personalizados</p>
+                </div>
+            </div>
+            
+            <!-- Publicaciones recientes -->
+            <div class="space-y-4">
+                <h2 class="text-xl font-bold text-[#1E1E1E]">Publicaciones recientes</h2>
+                
+                <% if (posts && posts.length > 0) { %>
+                    <% posts.forEach(post => { %>
+                        <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] overflow-hidden">
+                            <!-- Mismo formato de post que en home.ejs -->
+                            <div class="p-4 flex items-center gap-3 border-b border-[#D9D9D9]">
+                                <img src="<%= post.usuario.fotoPerfil %>" class="w-10 h-10 rounded-full object-cover">
+                                <div>
+                                    <a href="/profile/<%= post.usuario.username %>" class="font-semibold text-[#1E1E1E] hover:text-[#FB923C]">
+                                        <%= post.usuario.nombres %> <%= post.usuario.apellidos %>
+                                    </a>
+                                    <p class="text-xs text-[#1E1E1E]/60">@<%= post.usuario.username %></p>
+                                </div>
+                            </div>
+                            <img src="<%= post.imagenUrl %>" class="w-full max-h-[500px] object-cover">
+                            <div class="p-4">
+                                <% if (post.descripcion) { %>
+                                    <p class="text-[#1E1E1E]"><%= post.descripcion %></p>
+                                <% } %>
+                                <% if (post.etiquetas && post.etiquetas.length > 0) { %>
+                                    <div class="flex flex-wrap gap-1 mt-2">
+                                        <% post.etiquetas.forEach(tag => { %>
+                                            <a href="/feed/tag/<%= tag %>" class="text-[#FB923C] text-sm hover:underline">#<%= tag %></a>
+                                        <% }) %>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-8 text-center">
+                        <p class="text-[#1E1E1E]/60">No hay publicaciones aún. ¡Sé el primero en publicar!</p>
+                        <a href="/posts/create" class="inline-block mt-4 bg-[#FB923C] text-white px-6 py-2 rounded-lg hover:bg-[#FB923C]/90">
+                            Crear publicación
+                        </a>
+                    </div>
+                <% } %>
             </div>
         </div>
-        
-        <!-- Categoría 3 -->
-        <div class="bg-white rounded-lg shadow-sm border border-[#D9D9D9] overflow-hidden hover:shadow-md transition">
-            <div class="h-48 bg-gradient-to-br from-[#FFF59D] to-[#D9D9D9]"></div>
-            <div class="p-4">
-                <h3 class="font-semibold text-[#1E1E1E]">Restauración de Vinilos</h3>
-                <p class="text-sm text-[#1E1E1E]/70 mt-1">Música, tornamesas</p>
-            </div>
-        </div>
-        
-        <!-- Categoría 4 -->
-        <div class="bg-white rounded-lg shadow-sm border border-[#D9D9D9] overflow-hidden hover:shadow-md transition">
-            <div class="h-48 bg-gradient-to-br from-[#FB923C] to-[#1E1E1E]"></div>
-            <div class="p-4">
-                <h3 class="font-semibold text-[#1E1E1E]">Keycaps Mecánicos</h3>
-                <p class="text-sm text-[#1E1E1E]/70 mt-1">Teclados personalizados</p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Mensaje de bienvenida -->
-    <div class="mt-12 bg-[#FFF59D] rounded-lg p-6 text-center">
-        <h2 class="text-2xl font-bold text-[#1E1E1E] mb-2">¡Bienvenido a HobbyHub!</h2>
-        <p class="text-[#1E1E1E]/80 mb-4">Descubre hobbies nicho y conecta con personas que comparten tus mismas pasiones.</p>
-        <a href="/auth/register" class="inline-block bg-[#FB923C] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#FB923C]/90 transition">
-            Comenzar ahora
-        </a>
     </div>
 </div>

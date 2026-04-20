@@ -1,0 +1,207 @@
+<div class="max-w-6xl mx-auto">
+    <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Sidebar izquierdo - Tags populares e intereses -->
+        <div class="lg:w-80 space-y-6">
+            <!-- Sección de intereses del usuario -->
+            <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-4">
+                <h3 class="font-semibold text-[#1E1E1E] mb-3">Tus intereses</h3>
+                
+                <div id="interesesContainer" class="flex flex-wrap gap-2 mb-3">
+                    <% if (userInterests && userInterests.length > 0) { %>
+                        <% userInterests.forEach(interest => { %>
+                            <span class="inline-flex items-center gap-1 bg-[#FB923C]/10 text-[#FB923C] px-3 py-1 rounded-full text-sm">
+                                #<%= interest %>
+                                <button onclick="removeInterest('<%= interest %>')" class="hover:text-red-500">&times;</button>
+                            </span>
+                        <% }) %>
+                    <% } else { %>
+                        <p class="text-sm text-[#1E1E1E]/60">No tienes intereses aún. ¡Agrega algunos!</p>
+                    <% } %>
+                </div>
+                
+                <div class="flex gap-2">
+                    <input type="text" id="newInterest" placeholder="Agregar interés..." 
+                           class="flex-1 px-3 py-2 border border-[#D9D9D9] rounded-lg text-sm focus:ring-2 focus:ring-[#FB923C] focus:border-transparent outline-none">
+                    <button onclick="addInterest()" class="bg-[#FB923C] text-white px-4 py-2 rounded-lg text-sm hover:bg-[#FB923C]/90">
+                        +
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tags populares -->
+            <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-4 sticky top-4">
+                <h3 class="font-semibold text-[#1E1E1E] mb-3">Tendencias</h3>
+                <div class="flex flex-wrap gap-2">
+                    <% if (popularTags && popularTags.length > 0) { %>
+                        <% popularTags.forEach(tag => { %>
+                            <a href="/feed/tag/<%= tag.tag %>" 
+                               class="bg-[#FFF59D] text-[#1E1E1E] px-3 py-1 rounded-full text-sm hover:bg-[#FFF59D]/80 transition">
+                                #<%= tag.tag %> (<%= tag.count %>)
+                            </a>
+                        <% }) %>
+                    <% } else { %>
+                        <p class="text-sm text-[#1E1E1E]/60">No hay tags populares aún</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Feed principal -->
+        <div class="flex-1 space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-4">
+                <h2 class="text-xl font-bold text-[#1E1E1E]">Feed personalizado</h2>
+                <p class="text-sm text-[#1E1E1E]/60">Publicaciones basadas en tus intereses</p>
+            </div>
+            
+            <% if (error) { %>
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    <%= error %>
+                </div>
+            <% } %>
+            
+            <% if (posts && posts.length > 0) { %>
+                <% posts.forEach(post => { %>
+                    <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] overflow-hidden">
+                        <!-- Header del post -->
+                        <div class="p-4 flex items-center gap-3 border-b border-[#D9D9D9]">
+                            <img src="<%= post.usuario.fotoPerfil %>" class="w-10 h-10 rounded-full object-cover">
+                            <div>
+                                <a href="/profile/<%= post.usuario.username %>" class="font-semibold text-[#1E1E1E] hover:text-[#FB923C]">
+                                    <%= post.usuario.nombres %> <%= post.usuario.apellidos %>
+                                </a>
+                                <p class="text-xs text-[#1E1E1E]/60">@<%= post.usuario.username %></p>
+                            </div>
+                        </div>
+                        
+                        <!-- Imagen del post -->
+                        <img src="<%= post.imagenUrl %>" class="w-full max-h-[600px] object-cover">
+                        
+                        <!-- Contenido del post -->
+                        <div class="p-4">
+                            <!-- Botones de interacción -->
+                            <div class="flex gap-4 mb-3">
+                                <button onclick="likePost(<%= post.id %>)" class="flex items-center gap-1 text-[#1E1E1E]/60 hover:text-red-500 transition">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                    <span id="likes-<%= post.id %>"><%= post.likesCount || 0 %></span>
+                                </button>
+                                <button class="flex items-center gap-1 text-[#1E1E1E]/60 hover:text-[#FB923C] transition">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                    </svg>
+                                    <span><%= post.comentariosCount || 0 %></span>
+                                </button>
+                            </div>
+                            
+                            <!-- Descripción -->
+                            <% if (post.descripcion) { %>
+                                <p class="text-[#1E1E1E] mb-2"><%= post.descripcion %></p>
+                            <% } %>
+                            
+                            <!-- Etiquetas -->
+                            <% if (post.etiquetas && post.etiquetas.length > 0) { %>
+                                <div class="flex flex-wrap gap-1 mb-2">
+                                    <% post.etiquetas.forEach(tag => { %>
+                                        <a href="/feed/tag/<%= tag %>" class="text-[#FB923C] text-sm hover:underline">#<%= tag %></a>
+                                    <% }) %>
+                                </div>
+                            <% } %>
+                            
+                            <!-- Ubicación -->
+                            <% if (post.ubicacionNombre) { %>
+                                <p class="text-xs text-[#1E1E1E]/60 flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    <%= post.ubicacionNombre %>
+                                </p>
+                            <% } %>
+                            
+                            <!-- Fecha -->
+                            <p class="text-xs text-[#1E1E1E]/40 mt-2">
+                                <%= new Date(post.created_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' }) %>
+                            </p>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-8 text-center">
+                    <svg class="w-16 h-16 mx-auto text-[#D9D9D9] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    <h3 class="text-xl font-semibold text-[#1E1E1E] mb-2">No hay publicaciones</h3>
+                    <p class="text-[#1E1E1E]/60 mb-4">Agrega intereses para ver contenido personalizado</p>
+                    <a href="/posts/create" class="inline-block bg-[#FB923C] text-white px-6 py-2 rounded-lg hover:bg-[#FB923C]/90">
+                        Crear primera publicación
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<script>
+// Agregar interés
+async function addInterest() {
+    const input = document.getElementById('newInterest');
+    const interest = input.value.trim();
+    
+    if (!interest) return;
+    
+    try {
+        const response = await fetch('/feed/interests/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ interest })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            location.reload();
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// Remover interés
+async function removeInterest(interest) {
+    try {
+        const response = await fetch('/feed/interests/remove', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ interest })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            location.reload();
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// Dar like
+async function likePost(postId) {
+    try {
+        const response = await fetch(`/posts/${postId}/like`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            const likesSpan = document.getElementById(`likes-${postId}`);
+            likesSpan.textContent = data.likesCount;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+</script>
