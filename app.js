@@ -3,15 +3,39 @@ const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
 const morgan = require('morgan');
 const cors = require('cors');
+const session = require('express-session');
+const passport = require('passport');
 require('dotenv').config();
 
 // Importar conexión a BD
 const { connectDB } = require('./src/config/database');
 
+// Crear app (SOLO UNA VEZ)
 const app = express();
 
 // Conectar a MySQL
 connectDB();
+
+// Configurar sesiones
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'mi_secreto_super_seguro',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 1000 * 60 * 60 * 24
+    }
+}));
+
+// Inicializar Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Middleware para hacer disponible el usuario en todas las vistas
+app.use((req, res, next) => {
+    res.locals.user = req.user || null;
+    next();
+});
 
 // Middlewares
 app.use(cors());
@@ -38,14 +62,14 @@ app.use('/feed', feedRoutes);
 app.get('/', (req, res) => {
   res.render('feed/explore', { 
     title: 'Explora por categoría - HobbyHub',
-    user: null 
+    user: req.user
   });
 });
 
 // Ruta para probar la BD
 app.get('/test-db', async (req, res) => {
     try {
-        const User = require('./src/models/user.js');
+        const User = require('./src/models/User');
         const count = await User.count();
         res.json({ success: true, message: 'BD conectada', usersCount: count });
     } catch (error) {
@@ -57,7 +81,7 @@ app.get('/test-db', async (req, res) => {
 app.use((req, res) => {
   res.status(404).render('404', { 
     title: 'Página no encontrada',
-    user: null 
+    user: req.user
   });
 });
 
