@@ -20,7 +20,7 @@ El proyecto estará basado en una Arquitectura SOA (Service Oriented Architectur
 |2.| Routing, Layouts y Template Engines | 5 | ✅ Finalizado. |
 |3.| Creación de páginas de Login y Registro de Usuarios | 6 | ✅ Finalizado. |
 |4.| ORM's, Base de Datos y Modelo de Usuarios | 7 | ✅ Finalizado |
-|5.| **Autenticación con Redes Sociales** (Google, Facebook, Apple) | 20 | Pendiente |
+|5.| **Autenticación con Redes Sociales** (Google, Facebook, Apple) | 20 | ✅ Finalizado |
 |6.| **CRUD de Publicaciones** con subida de imágenes (Cloudinary) | 20 | Pendiente |
 |7.| **Feed Personalizado** por Tags de Intereses | 15 | Pendiente |
 |8.| **Perfiles de Usuario** y Sistema de Búsqueda | 15 | Pendiente |
