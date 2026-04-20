@@ -53,10 +53,12 @@ app.set('layout', 'layouts/main');
 // Importar rutas
 const authRoutes = require('./src/routes/auth.routes');
 const feedRoutes = require('./src/routes/feed.routes');
+const postsRoutes = require('./src/routes/posts.routes');
 
 // Usar rutas
 app.use('/auth', authRoutes);
 app.use('/feed', feedRoutes);
+app.use('/posts', postsRoutes);
 
 // Ruta principal
 app.get('/', (req, res) => {
