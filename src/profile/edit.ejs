@@ -1,0 +1,83 @@
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-6">
+        <h1 class="text-2xl font-bold text-[#1E1E1E] mb-6">Editar perfil</h1>
+        
+        <form method="POST" action="/profile/me/edit">
+            <div class="space-y-6">
+                <!-- Foto de perfil (opcional - después con Cloudinary) -->
+                <div class="flex items-center gap-4">
+                    <img src="<%= user.fotoPerfil %>" class="w-16 h-16 rounded-full object-cover">
+                    <button type="button" class="text-[#8B5CF6] text-sm">Cambiar foto</button>
+                </div>
+                
+                <!-- Biografía -->
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Biografía
+                    </label>
+                    <textarea 
+                        name="bio"
+                        rows="3"
+                        class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent outline-none resize-none"
+                        placeholder="Cuéntanos sobre ti..."><%= user.bio || '' %></textarea>
+                    <p class="text-xs text-[#1E1E1E]/60 mt-1">Máximo 160 caracteres</p>
+                </div>
+                
+                <!-- Hobbies -->
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Hobbies (separados por comas)
+                    </label>
+                    <input 
+                        type="text" 
+                        name="hobbies"
+                        value="<%= user.hobbies ? user.hobbies.join(', ') : '' %>"
+                        class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent outline-none"
+                        placeholder="pintura, música, warhammer">
+                </div>
+                
+                <!-- Redes sociales -->
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-[#1E1E1E]">Redes sociales</h3>
+                    
+                    <div>
+                        <label class="block text-sm text-[#1E1E1E] mb-1">Instagram</label>
+                        <input type="text" name="instagram" value="<%= user.instagram || '' %>"
+                               class="w-full px-4 py-2 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent outline-none"
+                               placeholder="@usuario">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-[#1E1E1E] mb-1">Twitter / X</label>
+                        <input type="text" name="twitter" value="<%= user.twitter || '' %>"
+                               class="w-full px-4 py-2 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent outline-none"
+                               placeholder="@usuario">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-[#1E1E1E] mb-1">TikTok</label>
+                        <input type="text" name="tiktok" value="<%= user.tiktok || '' %>"
+                               class="w-full px-4 py-2 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent outline-none"
+                               placeholder="@usuario">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-[#1E1E1E] mb-1">Sitio web</label>
+                        <input type="url" name="website" value="<%= user.website || '' %>"
+                               class="w-full px-4 py-2 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent outline-none"
+                               placeholder="https://...">
+                    </div>
+                </div>
+                
+                <div class="flex gap-3">
+                    <button type="submit" class="bg-[#8B5CF6] text-white px-6 py-2 rounded-lg hover:bg-[#8B5CF6]/90">
+                        Guardar cambios
+                    </button>
+                    <a href="/profile/me/profile" class="border border-[#D9D9D9] text-[#1E1E1E] px-6 py-2 rounded-lg hover:bg-gray-50">
+                        Cancelar
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

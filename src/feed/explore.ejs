@@ -29,13 +29,13 @@
             <!-- Grid de categorías (Página 5 del PDF) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Categoría 1 -->
-                <div class="bg-gradient-to-br from-[#FB923C] to-[#FFF59D] rounded-xl p-6 text-white">
+                <div class="bg-gradient-to-br from-[#8B5CF6] to-[#FFF59D] rounded-xl p-6 text-white">
                     <h3 class="text-xl font-bold">🎨 Pintura de Miniaturas</h3>
                     <p class="text-sm opacity-90 mt-1">Warhammer, D&D, modelos</p>
                 </div>
                 
                 <!-- Categoría 2 -->
-                <div class="bg-gradient-to-br from-[#1E1E1E] to-[#FB923C] rounded-xl p-6 text-white">
+                <div class="bg-gradient-to-br from-[#1E1E1E] to-[#8B5CF6] rounded-xl p-6 text-white">
                     <h3 class="text-xl font-bold">🎨 Murales & Graffiti</h3>
                     <p class="text-sm opacity-90 mt-1">Arte urbano, sprays</p>
                 </div>
@@ -47,7 +47,7 @@
                 </div>
                 
                 <!-- Categoría 4 -->
-                <div class="bg-gradient-to-br from-[#FB923C] to-[#1E1E1E] rounded-xl p-6 text-white">
+                <div class="bg-gradient-to-br from-[#8B5CF6] to-[#1E1E1E] rounded-xl p-6 text-white">
                     <h3 class="text-xl font-bold">⌨️ Keycaps Mecánicos</h3>
                     <p class="text-sm opacity-90 mt-1">Teclados personalizados</p>
                 </div>
@@ -64,7 +64,7 @@
                             <div class="p-4 flex items-center gap-3 border-b border-[#D9D9D9]">
                                 <img src="<%= post.usuario.fotoPerfil %>" class="w-10 h-10 rounded-full object-cover">
                                 <div>
-                                    <a href="/profile/<%= post.usuario.username %>" class="font-semibold text-[#1E1E1E] hover:text-[#FB923C]">
+                                    <a href="/profile/<%= post.usuario.username %>" class="font-semibold text-[#1E1E1E] hover:text-[#8B5CF6]">
                                         <%= post.usuario.nombres %> <%= post.usuario.apellidos %>
                                     </a>
                                     <p class="text-xs text-[#1E1E1E]/60">@<%= post.usuario.username %></p>
@@ -78,7 +78,7 @@
                                 <% if (post.etiquetas && post.etiquetas.length > 0) { %>
                                     <div class="flex flex-wrap gap-1 mt-2">
                                         <% post.etiquetas.forEach(tag => { %>
-                                            <a href="/feed/tag/<%= tag %>" class="text-[#FB923C] text-sm hover:underline">#<%= tag %></a>
+                                            <a href="/feed/tag/<%= tag %>" class="text-[#8B5CF6] text-sm hover:underline">#<%= tag %></a>
                                         <% }) %>
                                     </div>
                                 <% } %>
@@ -88,7 +88,7 @@
                 <% } else { %>
                     <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-8 text-center">
                         <p class="text-[#1E1E1E]/60">No hay publicaciones aún. ¡Sé el primero en publicar!</p>
-                        <a href="/posts/create" class="inline-block mt-4 bg-[#FB923C] text-white px-6 py-2 rounded-lg hover:bg-[#FB923C]/90">
+                        <a href="/posts/create" class="inline-block mt-4 bg-[#8B5CF6] text-white px-6 py-2 rounded-lg hover:bg-[#8B5CF6]/90">
                             Crear publicación
                         </a>
                     </div>

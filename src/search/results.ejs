@@ -1,0 +1,104 @@
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-6 mb-6">
+        <h1 class="text-2xl font-bold text-[#1E1E1E] mb-4">Resultados de búsqueda</h1>
+        
+        <form method="GET" action="/profile/search/results" class="flex gap-2">
+            <input type="text" name="q" value="<%= searchTerm %>" 
+                   placeholder="Buscar usuarios, publicaciones..."
+                   class="flex-1 px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent outline-none">
+            <button type="submit" class="bg-[#8B5CF6] text-white px-6 py-3 rounded-lg hover:bg-[#8B5CF6]/90">
+                Buscar
+            </button>
+        </form>
+    </div>
+    
+    <!-- Filtros -->
+    <div class="flex gap-2 mb-6">
+        <a href="/profile/search/results?q=<%= searchTerm %>&filter=users" 
+           class="px-4 py-2 rounded-lg <%= activeFilter === 'users' ? 'bg-[#8B5CF6] text-white' : 'bg-white border border-[#D9D9D9] text-[#1E1E1E]' %>">
+            Usuarios
+        </a>
+        <a href="/profile/search/results?q=<%= searchTerm %>&filter=posts" 
+           class="px-4 py-2 rounded-lg <%= activeFilter === 'posts' ? 'bg-[#8B5CF6] text-white' : 'bg-white border border-[#D9D9D9] text-[#1E1E1E]' %>">
+            Publicaciones
+        </a>
+        <a href="/profile/search/results?q=<%= searchTerm %>&filter=all" 
+           class="px-4 py-2 rounded-lg <%= activeFilter === 'all' ? 'bg-[#8B5CF6] text-white' : 'bg-white border border-[#D9D9D9] text-[#1E1E1E]' %>">
+            Todos
+        </a>
+    </div>
+    
+    <% if (!searchTerm) { %>
+        <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-8 text-center">
+            <p class="text-[#1E1E1E]/60">Ingresa un término de búsqueda</p>
+        </div>
+    <% } else if (users.length === 0 && posts.length === 0) { %>
+        <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-8 text-center">
+            <p class="text-[#1E1E1E]/60">No se encontraron resultados para "<%= searchTerm %>"</p>
+        </div>
+    <% } else { %>
+        
+        <!-- Resultados de usuarios -->
+        <% if (users.length > 0 && (activeFilter === 'users' || activeFilter === 'all')) { %>
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-[#1E1E1E] mb-4">Usuarios encontrados</h2>
+                <div class="space-y-3">
+                    <% users.forEach(userResult => { %>
+                        <a href="/profile/<%= userResult.username %>" class="block">
+                            <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-4 hover:shadow-md transition">
+                                <div class="flex items-center gap-3">
+                                    <img src="<%= userResult.fotoPerfil %>" class="w-12 h-12 rounded-full object-cover">
+                                    <div>
+                                        <p class="font-semibold text-[#1E1E1E]">
+                                            <%= userResult.nombres %> <%= userResult.apellidos %>
+                                        </p>
+                                        <p class="text-sm text-[#1E1E1E]/60">@<%= userResult.username %></p>
+                                        <% if (userResult.bio) { %>
+                                            <p class="text-sm text-[#1E1E1E]/70 mt-1"><%= userResult.bio.substring(0, 100) %></p>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    <% }) %>
+                </div>
+            </div>
+        <% } %>
+        
+        <!-- Resultados de publicaciones -->
+        <% if (posts.length > 0 && (activeFilter === 'posts' || activeFilter === 'all')) { %>
+            <div>
+                <h2 class="text-xl font-bold text-[#1E1E1E] mb-4">Publicaciones encontradas</h2>
+                <div class="space-y-4">
+                    <% posts.forEach(post => { %>
+                        <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] overflow-hidden">
+                            <div class="p-4 flex items-center gap-3 border-b border-[#D9D9D9]">
+                                <img src="<%= post.usuario.fotoPerfil %>" class="w-10 h-10 rounded-full object-cover">
+                                <div>
+                                    <a href="/profile/<%= post.usuario.username %>" class="font-semibold text-[#1E1E1E] hover:text-[#8B5CF6]">
+                                        <%= post.usuario.nombres %> <%= post.usuario.apellidos %>
+                                    </a>
+                                    <p class="text-xs text-[#1E1E1E]/60">@<%= post.usuario.username %></p>
+                                </div>
+                            </div>
+                            <img src="<%= post.imagenUrl %>" class="w-full max-h-96 object-cover">
+                            <div class="p-4">
+                                <% if (post.descripcion) { %>
+                                    <p class="text-[#1E1E1E]"><%= post.descripcion %></p>
+                                <% } %>
+                                <% if (post.etiquetas && post.etiquetas.length > 0) { %>
+                                    <div class="flex flex-wrap gap-1 mt-2">
+                                        <% post.etiquetas.forEach(tag => { %>
+                                            <span class="text-[#8B5CF6] text-sm">#<%= tag %></span>
+                                        <% }) %>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        <% } %>
+        
+    <% } %>
+</div>

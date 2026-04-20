@@ -1,0 +1,94 @@
+<div class="max-w-4xl mx-auto">
+    <!-- Mismo diseño que view.ejs pero con opciones adicionales -->
+    <div class="relative">
+        <div class="h-48 bg-gradient-to-r from-[#8B5CF6] to-[#FFF59D] rounded-t-xl"></div>
+        
+        <div class="absolute -bottom-12 left-6">
+            <img src="<%= user.fotoPerfil %>" 
+                 class="w-24 h-24 rounded-full border-4 border-white object-cover">
+        </div>
+        
+        <div class="absolute bottom-4 right-6">
+            <a href="/profile/me/edit" 
+               class="bg-[#8B5CF6] text-white px-6 py-2 rounded-lg hover:bg-[#8B5CF6]/90 transition">
+                Editar perfil
+            </a>
+        </div>
+    </div>
+    
+    <div class="bg-white rounded-b-xl shadow-sm border border-[#D9D9D9] border-t-0 p-6 pt-16">
+        <h1 class="text-2xl font-bold text-[#1E1E1E]">
+            <%= user.nombres %> <%= user.apellidos %>
+        </h1>
+        <p class="text-[#1E1E1E]/60 mb-2">@<%= user.username %></p>
+        
+        <% if (user.bio) { %>
+            <p class="text-[#1E1E1E] mb-4"><%= user.bio %></p>
+        <% } %>
+        
+        <div class="flex gap-6 mb-4">
+            <div>
+                <span class="font-bold text-[#1E1E1E]"><%= user.seguidoresCount || 0 %></span>
+                <span class="text-[#1E1E1E]/60"> seguidores</span>
+            </div>
+            <div>
+                <span class="font-bold text-[#1E1E1E]"><%= user.seguidosCount || 0 %></span>
+                <span class="text-[#1E1E1E]/60"> seguidos</span>
+            </div>
+        </div>
+        
+        <!-- Destacado y Servicios (Página 18) -->
+        <div class="flex gap-4 mb-4">
+            <button class="text-[#8B5CF6] font-semibold border-b-2 border-[#8B5CF6] pb-2">
+                Destacado
+            </button>
+            <button class="text-[#1E1E1E]/60 hover:text-[#8B5CF6] pb-2">
+                Servicios
+            </button>
+        </div>
+        
+        <% if (user.hobbies && user.hobbies.length > 0) { %>
+            <div class="flex flex-wrap gap-2 mb-4">
+                <% user.hobbies.forEach(hobby => { %>
+                    <span class="bg-[#FFF59D] text-[#1E1E1E] px-3 py-1 rounded-full text-sm">
+                        <%= hobby %>
+                    </span>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+    
+    <!-- Mis publicaciones -->
+    <div class="mt-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-[#1E1E1E]">Mis publicaciones</h2>
+            <a href="/posts/create" class="bg-[#8B5CF6] text-white px-4 py-2 rounded-lg text-sm hover:bg-[#8B5CF6]/90">
+                + Nueva publicación
+            </a>
+        </div>
+        
+        <% if (posts && posts.length > 0) { %>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <% posts.forEach(post => { %>
+                    <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] overflow-hidden">
+                        <img src="<%= post.imagenUrl %>" class="w-full h-64 object-cover">
+                        <div class="p-3">
+                            <p class="text-sm text-[#1E1E1E] line-clamp-2"><%= post.descripcion %></p>
+                            <div class="flex gap-2 mt-2 text-xs text-[#1E1E1E]/60">
+                                <span>❤️ <%= post.likesCount || 0 %></span>
+                                <span>💬 <%= post.comentariosCount || 0 %></span>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-8 text-center">
+                <p class="text-[#1E1E1E]/60 mb-4">No tienes publicaciones aún</p>
+                <a href="/posts/create" class="bg-[#8B5CF6] text-white px-6 py-2 rounded-lg hover:bg-[#8B5CF6]/90">
+                    Crear mi primera publicación
+                </a>
+            </div>
+        <% } %>
+    </div>
+</div>
