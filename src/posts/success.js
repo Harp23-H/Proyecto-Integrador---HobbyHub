@@ -10,10 +10,10 @@
         <p class="text-[#1E1E1E]/70 mb-6">Tu publicación ha sido compartida con la comunidad.</p>
         
         <div class="space-y-3">
-            <a href="/feed/home" class="block w-full bg-[#FB923C] text-white py-3 rounded-lg font-semibold hover:bg-[#FB923C]/90 transition">
+            <a href="/feed/home" class="block w-full bg-[#8B5CF6] text-white py-3 rounded-lg font-semibold hover:bg-[#8B5CF6]/90 transition">
                 Ver en mi feed
             </a>
-            <a href="/posts/create" class="block w-full border border-[#FB923C] text-[#FB923C] py-3 rounded-lg font-semibold hover:bg-[#FB923C]/10 transition">
+            <a href="/posts/create" class="block w-full border border-[#8B5CF6] text-[#8B5CF6] py-3 rounded-lg font-semibold hover:bg-[#8B5CF6]/10 transition">
                 Crear otra publicación
             </a>
         </div>

@@ -9,7 +9,7 @@
                 <div id="interesesContainer" class="flex flex-wrap gap-2 mb-3">
                     <% if (userInterests && userInterests.length > 0) { %>
                         <% userInterests.forEach(interest => { %>
-                            <span class="inline-flex items-center gap-1 bg-[#FB923C]/10 text-[#FB923C] px-3 py-1 rounded-full text-sm">
+                            <span class="inline-flex items-center gap-1 bg-[#8B5CF6]/10 text-[#8B5CF6] px-3 py-1 rounded-full text-sm">
                                 #<%= interest %>
                                 <button onclick="removeInterest('<%= interest %>')" class="hover:text-red-500">&times;</button>
                             </span>
@@ -21,8 +21,8 @@
                 
                 <div class="flex gap-2">
                     <input type="text" id="newInterest" placeholder="Agregar interés..." 
-                           class="flex-1 px-3 py-2 border border-[#D9D9D9] rounded-lg text-sm focus:ring-2 focus:ring-[#FB923C] focus:border-transparent outline-none">
-                    <button onclick="addInterest()" class="bg-[#FB923C] text-white px-4 py-2 rounded-lg text-sm hover:bg-[#FB923C]/90">
+                           class="flex-1 px-3 py-2 border border-[#D9D9D9] rounded-lg text-sm focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent outline-none">
+                    <button onclick="addInterest()" class="bg-[#8B5CF6] text-white px-4 py-2 rounded-lg text-sm hover:bg-[#8B5CF6]/90">
                         +
                     </button>
                 </div>
@@ -66,7 +66,7 @@
                         <div class="p-4 flex items-center gap-3 border-b border-[#D9D9D9]">
                             <img src="<%= post.usuario.fotoPerfil %>" class="w-10 h-10 rounded-full object-cover">
                             <div>
-                                <a href="/profile/<%= post.usuario.username %>" class="font-semibold text-[#1E1E1E] hover:text-[#FB923C]">
+                                <a href="/profile/<%= post.usuario.username %>" class="font-semibold text-[#1E1E1E] hover:text-[#8B5CF6]">
                                     <%= post.usuario.nombres %> <%= post.usuario.apellidos %>
                                 </a>
                                 <p class="text-xs text-[#1E1E1E]/60">@<%= post.usuario.username %></p>
@@ -86,7 +86,7 @@
                                     </svg>
                                     <span id="likes-<%= post.id %>"><%= post.likesCount || 0 %></span>
                                 </button>
-                                <button class="flex items-center gap-1 text-[#1E1E1E]/60 hover:text-[#FB923C] transition">
+                                <button class="flex items-center gap-1 text-[#1E1E1E]/60 hover:text-[#8B5CF6] transition">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                     </svg>
@@ -103,7 +103,7 @@
                             <% if (post.etiquetas && post.etiquetas.length > 0) { %>
                                 <div class="flex flex-wrap gap-1 mb-2">
                                     <% post.etiquetas.forEach(tag => { %>
-                                        <a href="/feed/tag/<%= tag %>" class="text-[#FB923C] text-sm hover:underline">#<%= tag %></a>
+                                        <a href="/feed/tag/<%= tag %>" class="text-[#8B5CF6] text-sm hover:underline">#<%= tag %></a>
                                     <% }) %>
                                 </div>
                             <% } %>
@@ -133,7 +133,7 @@
                     </svg>
                     <h3 class="text-xl font-semibold text-[#1E1E1E] mb-2">No hay publicaciones</h3>
                     <p class="text-[#1E1E1E]/60 mb-4">Agrega intereses para ver contenido personalizado</p>
-                    <a href="/posts/create" class="inline-block bg-[#FB923C] text-white px-6 py-2 rounded-lg hover:bg-[#FB923C]/90">
+                    <a href="/posts/create" class="inline-block bg-[#8B5CF6] text-white px-6 py-2 rounded-lg hover:bg-[#8B5CF6]/90">
                         Crear primera publicación
                     </a>
                 </div>

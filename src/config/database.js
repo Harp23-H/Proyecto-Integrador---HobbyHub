@@ -1,7 +1,6 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-// Configuración de la conexión
 const sequelize = new Sequelize(
     process.env.DB_NAME || 'hobbyhub',
     process.env.DB_USER || 'root',
@@ -10,7 +9,7 @@ const sequelize = new Sequelize(
         host: process.env.DB_HOST || 'localhost',
         port: process.env.DB_PORT || 3306,
         dialect: 'mysql',
-        logging: console.log, // Muestra las consultas SQL en consola
+        logging: false, // Desactivar logs de SQL
         pool: {
             max: 5,
             min: 0,
@@ -20,19 +19,20 @@ const sequelize = new Sequelize(
     }
 );
 
-// Probar conexión
 const connectDB = async () => {
     try {
         await sequelize.authenticate();
         console.log('✅ MySQL conectado exitosamente');
         
-        // Sincronizar modelos (crear tablas si no existen)
-        await sequelize.sync({ alter: true });
+        // Sincronizar modelos sin alter (para no modificar estructura existente)
+        // Si necesitas agregar columnas nuevas, hazlo manualmente
+        await sequelize.sync({ alter: false });
         console.log('✅ Modelos sincronizados');
         
     } catch (error) {
         console.error('❌ Error conectando a MySQL:', error);
-        process.exit(1);
+        // No salir del proceso, solo mostrar error
+        // process.exit(1);
     }
 };
 
