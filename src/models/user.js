@@ -214,5 +214,30 @@ User.prototype.comparePassword = async function(candidatePassword) {
 User.prototype.nombreCompleto = function() {
     return `${this.nombres} ${this.apellidos}`;
 };
+// ===== ASOCIACIONES (AGREGAR ESTO) =====
+// Importar Post después de definir User para evitar ciclo
+const Post = require('./Post');
+
+// Un User tiene muchos Posts
+User.hasMany(Post, { 
+    foreignKey: 'usuarioId', 
+    as: 'posts' 
+});
+
+// Un User tiene muchos cursos (como experto)
+const Course = require('./Course');
+User.hasMany(Course, { 
+    foreignKey: 'expertoId', 
+    as: 'cursos' 
+});
+
+// Un User tiene muchas inscripciones
+const Enrollment = require('./Enrollment');
+User.hasMany(Enrollment, { 
+    foreignKey: 'alumnoId', 
+    as: 'inscripciones' 
+});
+
+module.exports = User;
 
 module.exports = User;

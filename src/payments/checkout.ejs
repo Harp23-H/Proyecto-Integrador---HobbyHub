@@ -1,56 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title><%= title %></title>
-    <script src="https://js.stripe.com/v3/"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body class="bg-[#FFF8E7] font-['Inter']">
-    <div class="max-w-4xl mx-auto py-12 px-4">
-        <div class="grid md:grid-cols-2 gap-8">
-            <!-- Resumen del curso -->
-            <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] overflow-hidden h-fit">
-                <img src="<%= course.imagenUrl %>" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h2 class="text-xl font-bold text-[#1E1E1E] mb-2"><%= course.titulo %></h2>
-                    <p class="text-sm text-[#1E1E1E]/60 mb-4"><%= course.descripcion.substring(0, 150) %>...</p>
-                    
-                    <div class="space-y-3">
-                        <div class="flex justify-between">
-                            <span class="text-[#1E1E1E]/60">Modalidad:</span>
-                            <span class="font-semibold"><%= course.modalidad === 'presencial' ? '📍 Presencial' : '💻 En línea' %></span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-[#1E1E1E]/60">Duración:</span>
-                            <span class="font-semibold"><%= course.duracion %> horas</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-[#1E1E1E]/60">Nivel:</span>
-                            <span class="font-semibold capitalize"><%= course.nivel %></span>
-                        </div>
-                        <div class="border-t pt-3">
-                            <div class="flex justify-between">
-                                <span class="text-lg font-bold">Total:</span>
-                                <span class="text-2xl font-bold text-[#8B5CF6]">$<%= course.precio %> MXN</span>
-                            </div>
-                        </div>
+<div class="max-w-4xl mx-auto py-12 px-4">
+    <div class="grid md:grid-cols-2 gap-8">
+        <!-- Resumen del curso -->
+        <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] overflow-hidden">
+            <img src="<%= course.imagenUrl %>" class="w-full h-48 object-cover">
+            <div class="p-6">
+                <h2 class="text-xl font-bold"><%= course.titulo %></h2>
+                <p class="text-sm text-gray-500 mt-2"><%= course.descripcion %></p>
+                <div class="border-t mt-4 pt-4">
+                    <div class="flex justify-between">
+                        <span>Total:</span>
+                        <span class="text-2xl font-bold text-[#8B5CF6]">$<%= course.precio %> MXN</span>
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <!-- Formulario de pago simulado -->
+        <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-6">
+            <h1 class="text-2xl font-bold mb-6">Completar pago</h1>
             
-            <!-- Formulario de pago -->
-            <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-6">
-                <h1 class="text-2xl font-bold text-[#1E1E1E] mb-6">Completar pago</h1>
+            <form method="POST" action="/payments/process-payment">
+                <input type="hidden" name="cursoId" value="<%= course.id %>">
                 
-                <!-- Horario (si aplica) -->
                 <% if (course.horariosDisponibles && course.horariosDisponibles.length > 0) { %>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
-                            Selecciona tu horario *
-                        </label>
-                        <select id="horario" class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg">
-                            <option value="">Selecciona un horario</option>
+                        <label class="block text-sm font-medium mb-2">Selecciona tu horario</label>
+                        <select name="horarioSeleccionado" class="w-full p-3 border rounded-lg">
+                            <option value="">Selecciona</option>
                             <% course.horariosDisponibles.forEach(horario => { %>
                                 <option value="<%= horario %>"><%= horario %></option>
                             <% }) %>
@@ -58,123 +34,27 @@
                     </div>
                 <% } %>
                 
-                <!-- Comentarios -->
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
-                        Comentarios (opcional)
-                    </label>
-                    <textarea id="comentarios" rows="3"
-                              class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg"
-                              placeholder="¿Alguna pregunta para el experto?"></textarea>
+                    <label class="block text-sm font-medium mb-2">Comentarios (opcional)</label>
+                    <textarea name="comentarios" rows="3" class="w-full p-3 border rounded-lg"></textarea>
                 </div>
                 
-                <!-- Tarjeta de crédito (Stripe Elements) -->
+                <!-- Métodos de pago simulados -->
                 <div class="mb-6">
-                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
-                        Datos de la tarjeta
-                    </label>
-                    <div id="card-element" class="border border-[#D9D9D9] rounded-lg p-3"></div>
-                    <div id="card-errors" class="text-red-500 text-sm mt-2 hidden"></div>
+                    <label class="block text-sm font-medium mb-2">Método de pago</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer">
+                            <input type="radio" name="metodoPago" value="simulado" checked>
+                            <span>💳 Pago simulado (Demo)</span>
+                        </label>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">⚠️ Modo demostración - No se realizará ningún cargo real</p>
                 </div>
                 
-                <!-- Botón de pago -->
-                <button id="submitBtn" 
-                        class="w-full bg-[#8B5CF6] text-white py-3 rounded-lg font-semibold hover:bg-[#8B5CF6]/90 transition">
-                    Pagar $<%= course.precio %> MXN
+                <button type="submit" class="w-full bg-[#8B5CF6] text-white py-3 rounded-lg font-semibold">
+                    Confirmar pago - $<%= course.precio %> MXN
                 </button>
-                
-                <div id="loading" class="hidden text-center mt-4">
-                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#8B5CF6]"></div>
-                    <p class="mt-2 text-[#1E1E1E]/60">Procesando pago...</p>
-                </div>
-                
-                <p class="text-xs text-center text-[#1E1E1E]/50 mt-4">
-                    Tus datos están seguros. El pago es procesado por Stripe.
-                </p>
-            </div>
+            </form>
         </div>
     </div>
-    
-    <script>
-        const stripe = Stripe('<%= stripePublicKey %>');
-        let elements;
-        
-        // Configurar Stripe Elements
-        const elementsOptions = {
-            style: {
-                base: {
-                    fontSize: '16px',
-                    color: '#1E1E1E',
-                    '::placeholder': { color: '#D9D9D9' }
-                }
-            }
-        };
-        
-        // Esperar a que cargue el DOM
-        document.addEventListener('DOMContentLoaded', async () => {
-            elements = stripe.elements();
-            const cardElement = elements.create('card', elementsOptions);
-            cardElement.mount('#card-element');
-            
-            cardElement.on('change', (event) => {
-                const displayError = document.getElementById('card-errors');
-                if (event.error) {
-                    displayError.textContent = event.error.message;
-                    displayError.classList.remove('hidden');
-                } else {
-                    displayError.classList.add('hidden');
-                }
-            });
-        });
-        
-        // Manejar el pago
-        document.getElementById('submitBtn').addEventListener('click', async () => {
-            const horario = document.getElementById('horario')?.value || '';
-            const comentarios = document.getElementById('comentarios').value;
-            
-            if (!horario && <%= course.horariosDisponibles && course.horariosDisponibles.length > 0 %>) {
-                alert('Por favor selecciona un horario');
-                return;
-            }
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const loading = document.getElementById('loading');
-            
-            submitBtn.classList.add('opacity-50');
-            submitBtn.disabled = true;
-            loading.classList.remove('hidden');
-            
-            try {
-                // Crear sesión de pago en el servidor
-                const response = await fetch('/payments/create-payment-session', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        cursoId: <%= course.id %>,
-                        horarioSeleccionado: horario,
-                        comentarios: comentarios
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.url) {
-                    // Redirigir a Stripe Checkout
-                    window.location.href = data.url;
-                } else {
-                    alert('Error al procesar el pago');
-                    submitBtn.classList.remove('opacity-50');
-                    submitBtn.disabled = false;
-                    loading.classList.add('hidden');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al procesar el pago');
-                submitBtn.classList.remove('opacity-50');
-                submitBtn.disabled = false;
-                loading.classList.add('hidden');
-            }
-        });
-    </script>
-</body>
-</html>
+</div>

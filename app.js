@@ -6,6 +6,7 @@ const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 require('dotenv').config();
+require('./src/config/passport');
 
 // Importar conexión a BD
 const { connectDB } = require('./src/config/database');
@@ -54,18 +55,19 @@ const authRoutes = require('./src/routes/auth.routes');
 const feedRoutes = require('./src/routes/feed.routes');
 const postsRoutes = require('./src/routes/posts.routes');
 const profileRoutes = require('./src/routes/profile.routes');
-const locationRoutes = require('./src/routes/location.routes');
+//const locationRoutes = require('./src/routes/location.routes');
 const coursesRoutes = require('./src/routes/courses.routes');
 const enrollmentRoutes = require('./src/routes/enrollment.routes');
 const paymentsRoutes = require('./src/routes/payments.routes');
 const dashboardRoutes = require('./src/routes/dashboard.routes');
 const reportsRoutes = require('./src/routes/reports.routes');
 // Usar rutas
+
 app.use('/auth', authRoutes);
 app.use('/feed', feedRoutes);
 app.use('/posts', postsRoutes);
 app.use('/profile', profileRoutes);
-app.use('/location', locationRoutes);
+//app.use('/location', locationRoutes);
 app.use('/courses', coursesRoutes);
 app.use('/enrollment', enrollmentRoutes);
 app.use('/payments', paymentsRoutes);
