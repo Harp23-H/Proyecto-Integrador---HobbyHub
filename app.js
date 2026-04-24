@@ -57,6 +57,8 @@ const profileRoutes = require('./src/routes/profile.routes');
 const locationRoutes = require('./src/routes/location.routes');
 const coursesRoutes = require('./src/routes/courses.routes');
 const enrollmentRoutes = require('./src/routes/enrollment.routes');
+const paymentsRoutes = require('./src/routes/payments.routes');
+
 
 // Usar rutas
 app.use('/auth', authRoutes);
@@ -66,7 +68,11 @@ app.use('/profile', profileRoutes);
 app.use('/location', locationRoutes);
 app.use('/courses', coursesRoutes);
 app.use('/enrollment', enrollmentRoutes);
+app.use('/payments', paymentsRoutes);
 
+app.post('/payments/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+    // Esto lo maneja payments.routes.js
+});
 // Ruta principal
 app.get('/', (req, res) => {
   res.render('feed/explore', { 
