@@ -24,7 +24,7 @@ El proyecto estará basado en una Arquitectura SOA (Service Oriented Architectur
 |6.| **CRUD de Publicaciones** con subida de imágenes (Cloudinary) | 20 | ✅ Finalizado |
 |7.| **Feed Personalizado** por Tags de Intereses | 15 | ✅ Finalizado |
 |8.| **Perfiles de Usuario** y Sistema de Búsqueda | 15 | ✅ Finalizado |
-|9.| **Integración de Google Maps** para ubicación de cursos | 20 | Pendiente |
+|9.| **Integración de Google Maps** para ubicación de cursos | 20 | ✅ Finalizado |
 |10.| **Módulo de Cursos/Talleres** (Creación y gestión) | 20 | Pendiente |
 |11.| **Contratación de Cursos** (Presenciales y Virtuales) | 15 | Pendiente |
 |12.| **Pasarela de Pagos** (Stripe) y Confirmación | 20 | Pendiente |
