@@ -11,19 +11,19 @@ HobbyHub es una plataforma web enfocada en hobbies nicho y poco comunes, esos qu
 ## Logotipos
 | Logo de la Aplicación | Logo del Equipo |
 |----------------------|----------------|
-| ![Logo App](imagenes/logoHobbyHub.png) | ![Logo Equipo](imagenes/LogoEmpresa.png) |
+| ![Logo App](/Imagenes/logoHobbyHub.png)) | ![Logo Equipo](/Imagenes/LogoEmpresa.png) |
 
 ---
 
 ##  Equipo de trabajo
 
-![Organigrama](imagenes/OrganigramaEquipo.png)
+![Organigrama](/Imagenes/OrganigramaEquipo.png)
 
 ---
 
 ##  Planeación del proyecto
 
-![Organigrama](imagenes/gant.jpeg)
+![Organigrama](/Imagenes/gant.jpeg)
 
 ---
 #### Consideraciones:
