@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
+const coursesRoutes = require('./src/routes/courses.routes');
 require('dotenv').config();
 
 // Importar conexión a BD
@@ -63,6 +64,7 @@ app.use('/feed', feedRoutes);
 app.use('/posts', postsRoutes);
 app.use('/profile', profileRoutes); 
 app.use('/location', locationRoutes);
+app.use('/courses', coursesRoutes);
 
 // Ruta principal
 app.get('/', (req, res) => {
