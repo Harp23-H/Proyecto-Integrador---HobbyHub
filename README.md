@@ -3,8 +3,27 @@ Repositorio del código fuente del proyecto de clase, Plataforma de Hobbies Nich
 
 ## Proyecto de Clase: HobbyHub
 ---
+## ¿Qué es HobbyHub?
 <p align="justify">
 HobbyHub es una plataforma web enfocada en hobbies nicho y poco comunes, esos que no encuentras fácilmente en redes generales. Los usuarios descubren y comparten proyectos visuales de hobbies como pintar miniaturas de Warhammer, hacer murales/graffiti, restaurar vinilos, fabricar keycaps mecánicos, cosplay casero, terrarios, etc. La plataforma incluye feed personalizado por tags y la funcionalidad de que usuarios expertos puedan ofrecer cursos/talleres (virtuales o presenciales) o servicios directos, con opción de ser gratis o pagado para monetizar su pasión.</p>
+
+---
+## Logotipos
+| Logo de la Aplicación | Logo del Equipo |
+|----------------------|----------------|
+| ![Logo App](imagenes/logoHobbyHub.png) | ![Logo Equipo](imagenes/LogoEmpresa.png) |
+
+---
+
+##  Equipo de trabajo
+
+![Organigrama](imagenes/OrganigramaEquipo.png)
+
+---
+
+##  Planeación del proyecto
+
+![Organigrama](imagenes/gant.jpeg.png)
 
 ---
 #### Consideraciones:
@@ -68,3 +87,149 @@ cp .env.example .env
 
 # Iniciar servidor de desarrollo
 npm run dev
+
+---
+##  Descripción del problema
+
+En la actualidad, muchas personas tienen interés en aprender nuevas habilidades o desarrollar hobbies, sin embargo, no siempre cuentan con un espacio digital adecuado donde puedan hacerlo de manera organizada, accesible y confiable. Aunque existen diversas plataformas en internet, la mayoría se enfoca únicamente en el entretenimiento o en la educación, pero rara vez combinan ambas funciones de manera eficiente. Esto provoca que los usuarios tengan que utilizar múltiples aplicaciones para satisfacer sus necesidades, lo que resulta poco práctico y limita la interacción entre personas con intereses similares.
+A partir de esta problemática surge la necesidad de crear una solución que integre comunidad, aprendizaje y difusión de contenido en un solo entorno. HobbyHub nace como una propuesta que busca cubrir esta necesidad, ofreciendo un espacio donde los usuarios puedan compartir sus conocimientos, aprender nuevas actividades y conectar con otros usuarios. 
+
+---
+
+##  Objetivo general
+
+Desarrollar una plataforma web interactiva que permita a los usuarios compartir, descubrir y ofrecer talleres relacionados con distintos hobbies. Se busca que la aplicación funcione como un entorno digital completo donde los usuarios puedan tanto consumir contenido como generarlo, promoviendo así la participación activa dentro de la plataforma. Este enfoque permite que el aprendizaje no sea un proceso pasivo, sino una experiencia compartida entre los miembros de la comunidad.
+
+---
+
+##  Objetivos específicos
+
+- Implementar registro e inicio de sesión  
+- Desarrollar publicación de contenido  
+- Permitir interacción entre usuarios  
+- Validar el sistema mediante pruebas  
+- Evaluar la calidad usando KPIs  
+
+---
+
+## Requerimientos del sistema
+
+###  Funcionales
+- Registro de usuarios  
+- Inicio de sesión  
+- Publicación de contenido  
+- Visualización de hobbies  
+- Edición de perfil  
+
+###  No funcionales
+- Seguridad en autenticación  
+- Buen rendimiento  
+- Interfaz amigable  
+- Disponibilidad del sistema  
+
+###  Reglas de negocio
+- No permitir campos vacíos  
+- Validar credenciales  
+- Controlar acceso a funcionalidades  
+
+---
+
+##  Tecnologías utilizadas
+
+- Frontend: HTML, CSS, JavaScript  
+- Backend: Node.js, Express  
+- Base de datos: MySQL  
+- Testing: JIRA  
+- Control de versiones: GitHub  
+
+---
+
+##  Pruebas del sistema
+
+Para validar el funcionamiento de HobbyHub se realizaron pruebas mediante **JIRA**, evaluando:
+
+- Registro de usuario  
+- Inicio de sesión  
+- Publicación de contenido  
+- Visualización del feed  
+- Edición de perfil  
+
+---
+
+##  Resultados obtenidos
+
+- Casos de prueba: 10  
+- Correctos: 6  
+- Con errores: 4  
+
+---
+
+##  KPIs
+
+| Indicador | Resultado |
+|----------|--------|
+| Cobertura | 100% |
+| Tasa de defectos | 40% |
+| Productividad | 2 casos/hora |
+
+---
+
+##  Problemas detectados
+
+Durante las pruebas se identificaron:
+
+- Validación de campos incompleta  
+- Errores en el feed  
+- Problemas al publicar contenido  
+
+---
+
+##  Acciones correctivas
+
+- Mejorar validaciones  
+- Corregir lógica del sistema  
+- Optimizar manejo de errores  
+
+---
+
+##  Propuestas de mejora
+
+- Sistema de recomendaciones  
+- Notificaciones  
+- Mejor diseño visual  
+- Optimización de rendimiento  
+
+---
+
+##  Conclusión
+
+HobbyHub funciona en la mayoría de sus funciones, pero presenta algunos errores importantes que deben corregirse antes de su implementación en producción.
+
+A pesar de esto, el sistema tiene una base sólida y un gran potencial de crecimiento.
+
+---
+
+##  Uso de IA
+
+Se utilizaron herramientas de IA como apoyo en:
+- Corrección de redacción de documentación  
+- Organización del proyecto  
+- Mejora de ideas  
+
+Siempre revisando y adaptando el contenido. 
+
+---
+
+## Integrantes
+
+- Blanca Sarahí Meléndez Torres-240755  
+- Vanessa Vergara Domínguez-240270
+- Marianna Mayte Gutiérrez Gayosso-240174
+- Harold Alexis Ramírez Peralta-240497
+- José Antonio Ricaño Reyes-240267
+
+---
+
+##  Estado del proyecto
+
+🟡 En desarrollo (aún no listo para producción...)
