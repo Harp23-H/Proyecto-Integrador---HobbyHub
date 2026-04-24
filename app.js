@@ -5,13 +5,11 @@ const morgan = require('morgan');
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
-const coursesRoutes = require('./src/routes/courses.routes');
 require('dotenv').config();
 
 // Importar conexión a BD
 const { connectDB } = require('./src/config/database');
 
-// Crear app (SOLO UNA VEZ)
 const app = express();
 
 // Conectar a MySQL
@@ -57,14 +55,17 @@ const feedRoutes = require('./src/routes/feed.routes');
 const postsRoutes = require('./src/routes/posts.routes');
 const profileRoutes = require('./src/routes/profile.routes');
 const locationRoutes = require('./src/routes/location.routes');
+const coursesRoutes = require('./src/routes/courses.routes');
+const enrollmentRoutes = require('./src/routes/enrollment.routes');
 
 // Usar rutas
 app.use('/auth', authRoutes);
 app.use('/feed', feedRoutes);
 app.use('/posts', postsRoutes);
-app.use('/profile', profileRoutes); 
+app.use('/profile', profileRoutes);
 app.use('/location', locationRoutes);
 app.use('/courses', coursesRoutes);
+app.use('/enrollment', enrollmentRoutes);
 
 // Ruta principal
 app.get('/', (req, res) => {

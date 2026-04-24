@@ -1,0 +1,14 @@
+<% if (!isEnrolled) { %>
+    <a href="/enrollment/checkout/<%= course.id %>" 
+       class="w-full bg-[#8B5CF6] text-white py-3 rounded-lg font-semibold hover:bg-[#8B5CF6]/90 transition text-center block">
+        Contratar curso - $<%= course.precio %> MXN
+    </a>
+<% } else { %>
+    <div class="bg-green-100 text-green-700 p-3 rounded-lg text-center">
+        ✅ Ya estás inscrito en este curso
+    </div>
+    <a href="/enrollment/my/enrollments" 
+       class="w-full border border-[#8B5CF6] text-[#8B5CF6] py-3 rounded-lg font-semibold hover:bg-[#EDE9FE] transition text-center block mt-3">
+        Ver mis contrataciones
+    </a>
+<% } %>
