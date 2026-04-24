@@ -1,0 +1,120 @@
+<div class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-[#1E1E1E]">Mis Contrataciones</h1>
+        <a href="/courses" class="text-[#8B5CF6] hover:underline">Explorar más cursos →</a>
+    </div>
+    
+    <% if (enrollments && enrollments.length > 0) { %>
+        <div class="space-y-4">
+            <% enrollments.forEach(enrollment => { %>
+                <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] overflow-hidden">
+                    <div class="md:flex">
+                        <!-- Imagen del curso -->
+                        <img src="<%= enrollment.curso.imagenUrl %>" 
+                             class="w-full md:w-48 h-48 object-cover">
+                        
+                        <!-- Información -->
+                        <div class="flex-1 p-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h2 class="text-xl font-bold text-[#1E1E1E] mb-1">
+                                        <a href="/courses/<%= enrollment.curso.id %>" class="hover:text-[#8B5CF6]">
+                                            <%= enrollment.curso.titulo %>
+                                        </a>
+                                    </h2>
+                                    <p class="text-sm text-[#1E1E1E]/60">
+                                        Por @<%= enrollment.curso.experto.username %>
+                                    </p>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-sm
+                                    <%= enrollment.estado === 'confirmado' ? 'bg-green-100 text-green-700' : 
+                                       enrollment.estado === 'cancelado' ? 'bg-red-100 text-red-700' : 
+                                       'bg-yellow-100 text-yellow-700' %>">
+                                    <%= enrollment.estado === 'confirmado' ? '✅ Confirmado' :
+                                       enrollment.estado === 'cancelado' ? '❌ Cancelado' : '⏳ Pendiente' %>
+                                </span>
+                            </div>
+                            
+                            <div class="grid md:grid-cols-2 gap-2 mt-3 text-sm">
+                                <div>
+                                    <span class="text-[#1E1E1E]/60">Modalidad:</span>
+                                    <span class="font-medium">
+                                        <%= enrollment.curso.modalidad === 'presencial' ? '📍 Presencial' : '💻 En línea' %>
+                                    </span>
+                                </div>
+                                <div>
+                                    <span class="text-[#1E1E1E]/60">Duración:</span>
+                                    <span class="font-medium"><%= enrollment.curso.duracion %> horas</span>
+                                </div>
+                                <div>
+                                    <span class="text-[#1E1E1E]/60">Inscripción:</span>
+                                    <span class="font-medium"><%= new Date(enrollment.fechaInscripcion).toLocaleDateString('es-MX') %></span>
+                                </div>
+                                <div>
+                                    <span class="text-[#1E1E1E]/60">Monto:</span>
+                                    <span class="font-medium text-[#8B5CF6]">$<%= enrollment.montoPagado %> MXN</span>
+                                </div>
+                                <% if (enrollment.horarioSeleccionado) { %>
+                                    <div class="md:col-span-2">
+                                        <span class="text-[#1E1E1E]/60">Horario seleccionado:</span>
+                                        <span class="font-medium"><%= enrollment.horarioSeleccionado %></span>
+                                    </div>
+                                <% } %>
+                            </div>
+                            
+                            <!-- Acciones -->
+                            <div class="flex gap-3 mt-4">
+                                <a href="/courses/<%= enrollment.curso.id %>" 
+                                   class="text-[#8B5CF6] text-sm hover:underline">
+                                    Ver curso
+                                </a>
+                                
+                                <% if (enrollment.estado === 'confirmado') { %>
+                                    <button onclick="cancelEnrollment(<%= enrollment.id %>)" 
+                                            class="text-red-500 text-sm hover:underline">
+                                        Cancelar inscripción
+                                    </button>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    <% } else { %>
+        <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-12 text-center">
+            <svg class="w-16 h-16 mx-auto text-[#D9D9D9] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 class="text-xl font-semibold text-[#1E1E1E] mb-2">Aún no tienes contrataciones</h3>
+            <p class="text-[#1E1E1E]/60 mb-6">Explora los cursos disponibles y encuentra tu próximo hobby</p>
+            <a href="/courses" class="inline-block bg-[#8B5CF6] text-white px-6 py-2 rounded-lg hover:bg-[#8B5CF6]/90">
+                Explorar cursos
+            </a>
+        </div>
+    <% } %>
+</div>
+
+<script>
+async function cancelEnrollment(enrollmentId) {
+    if (!confirm('¿Estás seguro de que quieres cancelar esta inscripción?')) return;
+    
+    try {
+        const response = await fetch(`/enrollment/${enrollmentId}/cancel`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error al cancelar la inscripción');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al cancelar la inscripción');
+    }
+}
+</script>
