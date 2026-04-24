@@ -1,0 +1,225 @@
+<!-- Modal del Mapa -->
+<div id="mapModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full mx-4">
+        <div class="p-4 border-b border-[#D9D9D9] flex justify-between items-center">
+            <h3 class="text-xl font-bold text-[#1E1E1E]">Seleccionar ubicación</h3>
+            <button onclick="closeMapModal()" class="text-[#1E1E1E]/60 hover:text-[#1E1E1E]">
+                ✕
+            </button>
+        </div>
+        
+        <div class="p-4">
+            <!-- Buscador -->
+            <div class="mb-4">
+                <input type="text" id="locationSearch" 
+                       placeholder="Buscar dirección..."
+                       class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent outline-none">
+                <div id="predictions" class="absolute bg-white border border-[#D9D9D9] rounded-lg mt-1 hidden z-10"></div>
+            </div>
+            
+            <!-- Mapa -->
+            <div id="map" class="w-full h-96 rounded-lg mb-4"></div>
+            
+            <!-- Ubicación seleccionada -->
+            <div id="selectedLocation" class="hidden">
+                <p class="text-sm text-[#1E1E1E]/60 mb-2">Ubicación seleccionada:</p>
+                <p id="selectedAddress" class="text-[#1E1E1E] font-medium"></p>
+            </div>
+            
+            <!-- Botones -->
+            <div class="flex gap-3 mt-4">
+                <button onclick="confirmLocation()" 
+                        class="flex-1 bg-[#8B5CF6] text-white py-3 rounded-lg font-semibold hover:bg-[#8B5CF6]/90 transition">
+                    Confirmar ubicación
+                </button>
+                <button onclick="closeMapModal()" 
+                        class="flex-1 border border-[#D9D9D9] text-[#1E1E1E] py-3 rounded-lg font-semibold hover:bg-gray-50 transition">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let map = null;
+let marker = null;
+let selectedLocationData = null;
+let autocompleteService = null;
+let placesService = null;
+
+// Inicializar mapa
+async function initMap() {
+    const { Loader } = await import('@googlemaps/js-api-loader');
+    
+    const loader = new Loader({
+        apiKey: '<%= process.env.GOOGLE_MAPS_API_KEY %>',
+        version: 'weekly',
+        libraries: ['places']
+    });
+    
+    await loader.load();
+    
+    // Centro por defecto (México)
+    const defaultCenter = { lat: 23.6345, lng: -102.5528 };
+    
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: defaultCenter,
+        zoom: 5,
+        styles: [
+            {
+                featureType: 'poi',
+                elementType: 'labels',
+                stylers: [{ visibility: 'off' }]
+            }
+        ]
+    });
+    
+    autocompleteService = new google.maps.places.AutocompleteService();
+    placesService = new google.maps.places.PlacesService(map);
+    
+    // Click en el mapa para seleccionar ubicación
+    map.addListener('click', (e) => {
+        setMarker(e.latLng);
+        getAddressFromLatLng(e.latLng.lat(), e.latLng.lng());
+    });
+}
+
+// Colocar marcador
+function setMarker(position) {
+    if (marker) {
+        marker.setMap(null);
+    }
+    
+    marker = new google.maps.Marker({
+        position: position,
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP
+    });
+    
+    marker.addListener('dragend', (e) => {
+        getAddressFromLatLng(e.latLng.lat(), e.latLng.lng());
+    });
+    
+    map.setCenter(position);
+    map.setZoom(15);
+}
+
+// Obtener dirección desde coordenadas
+function getAddressFromLatLng(lat, lng) {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+        if (status === 'OK' && results[0]) {
+            selectedLocationData = {
+                lat: lat,
+                lng: lng,
+                address: results[0].formatted_address
+            };
+            
+            document.getElementById('selectedAddress').textContent = selectedLocationData.address;
+            document.getElementById('selectedLocation').classList.remove('hidden');
+        }
+    });
+}
+
+// Búsqueda de lugares
+const searchInput = document.getElementById('locationSearch');
+const predictionsDiv = document.getElementById('predictions');
+
+searchInput.addEventListener('input', debounce(async () => {
+    const input = searchInput.value;
+    
+    if (input.length < 3) {
+        predictionsDiv.classList.add('hidden');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/location/autocomplete?input=${encodeURIComponent(input)}`);
+        const data = await response.json();
+        
+        if (data.predictions && data.predictions.length > 0) {
+            predictionsDiv.innerHTML = data.predictions.map(p => `
+                <div class="px-4 py-2 hover:bg-[#EDE9FE] cursor-pointer" onclick="selectPlace('${p.placeId}', '${p.description.replace(/'/g, "\\'")}')">
+                    ${p.description}
+                </div>
+            `).join('');
+            predictionsDiv.classList.remove('hidden');
+        } else {
+            predictionsDiv.classList.add('hidden');
+        }
+    } catch (error) {
+        console.error('Error en búsqueda:', error);
+    }
+}, 300));
+
+// Seleccionar lugar
+async function selectPlace(placeId, description) {
+    searchInput.value = description;
+    predictionsDiv.classList.add('hidden');
+    
+    try {
+        const response = await fetch(`/location/place-details?placeId=${placeId}`);
+        const data = await response.json();
+        
+        if (data.success) {
+            const position = new google.maps.LatLng(data.lat, data.lng);
+            setMarker(position);
+            selectedLocationData = {
+                lat: data.lat,
+                lng: data.lng,
+                address: data.address,
+                name: data.name
+            };
+            document.getElementById('selectedAddress').textContent = selectedLocationData.address;
+            document.getElementById('selectedLocation').classList.remove('hidden');
+        }
+    } catch (error) {
+        console.error('Error al obtener detalles:', error);
+    }
+}
+
+// Confirmar ubicación
+function confirmLocation() {
+    if (selectedLocationData) {
+        // Enviar datos al formulario padre
+        const event = new CustomEvent('locationSelected', { 
+            detail: selectedLocationData 
+        });
+        window.dispatchEvent(event);
+        closeMapModal();
+    }
+}
+
+// Abrir modal
+function openMapModal() {
+    document.getElementById('mapModal').classList.remove('hidden');
+    document.getElementById('mapModal').classList.add('flex');
+    
+    if (!map) {
+        initMap();
+    } else {
+        google.maps.event.trigger(map, 'resize');
+    }
+}
+
+// Cerrar modal
+function closeMapModal() {
+    document.getElementById('mapModal').classList.add('hidden');
+    document.getElementById('mapModal').classList.remove('flex');
+}
+
+// Debounce helper
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+</script>

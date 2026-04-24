@@ -1,99 +1,52 @@
 <div class="max-w-6xl mx-auto">
-    <div class="flex flex-col lg:flex-row gap-8">
-        <!-- Sidebar con tags populares -->
-        <div class="lg:w-80">
-            <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-4 sticky top-4">
-                <h3 class="font-semibold text-[#1E1E1E] mb-3">Tendencias</h3>
-                <div class="flex flex-wrap gap-2">
-                    <% if (popularTags && popularTags.length > 0) { %>
-                        <% popularTags.forEach(tag => { %>
-                            <a href="/feed/tag/<%= tag.tag %>" 
-                               class="bg-[#FFF59D] text-[#1E1E1E] px-3 py-1 rounded-full text-sm hover:bg-[#FFF59D]/80 transition">
-                                #<%= tag.tag %> (<%= tag.count %>)
-                            </a>
-                        <% }) %>
-                    <% } else { %>
-                        <p class="text-sm text-[#1E1E1E]/60">No hay tags populares aún</p>
-                    <% } %>
-                </div>
+    <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-6">
+        <h1 class="text-3xl font-bold text-[#1E1E1E] mb-4">Explorar HobbyHub</h1>
+        <p class="text-[#1E1E1E]/60 mb-8">Descubre y comparte tus hobbies favoritos</p>
+        
+        <!-- Grid de categorías -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD] rounded-xl p-6 text-white hover:shadow-lg transition">
+                <h3 class="text-xl font-bold">🎨 Pintura de Miniaturas</h3>
+                <p class="text-sm opacity-90 mt-1">Warhammer, D&D, modelos 3D</p>
+                <span class="inline-block mt-3 text-sm opacity-75">124 publicaciones →</span>
+            </div>
+            
+            <div class="bg-gradient-to-br from-[#1E1E1E] to-[#8B5CF6] rounded-xl p-6 text-white hover:shadow-lg transition">
+                <h3 class="text-xl font-bold">🎨 Murales & Graffiti</h3>
+                <p class="text-sm opacity-90 mt-1">Arte urbano, sprays, murales</p>
+                <span class="inline-block mt-3 text-sm opacity-75">89 publicaciones →</span>
+            </div>
+            
+            <div class="bg-gradient-to-br from-[#C4B5FD] to-[#D9D9D9] rounded-xl p-6 text-[#1E1E1E] hover:shadow-lg transition">
+                <h3 class="text-xl font-bold">🎵 Restauración de Vinilos</h3>
+                <p class="text-sm opacity-90 mt-1">Música clásica, tornamesas</p>
+                <span class="inline-block mt-3 text-sm opacity-75">56 publicaciones →</span>
+            </div>
+            
+            <div class="bg-gradient-to-br from-[#8B5CF6] to-[#1E1E1E] rounded-xl p-6 text-white hover:shadow-lg transition">
+                <h3 class="text-xl font-bold">⌨️ Keycaps Mecánicos</h3>
+                <p class="text-sm opacity-90 mt-1">Teclados personalizados, diseño</p>
+                <span class="inline-block mt-3 text-sm opacity-75">203 publicaciones →</span>
+            </div>
+            
+            <div class="bg-gradient-to-br from-[#8B5CF6] to-[#6B21A5] rounded-xl p-6 text-white hover:shadow-lg transition">
+                <h3 class="text-xl font-bold">🤖 Cosplay</h3>
+                <p class="text-sm opacity-90 mt-1">Disfraces, convenciones, DIY</p>
+                <span class="inline-block mt-3 text-sm opacity-75">167 publicaciones →</span>
+            </div>
+            
+            <div class="bg-gradient-to-br from-[#1E1E1E] to-[#4C1D95] rounded-xl p-6 text-white hover:shadow-lg transition">
+                <h3 class="text-xl font-bold"> Terrarios</h3>
+                <p class="text-sm opacity-90 mt-1">Plantas, mini jardines, decoración</p>
+                <span class="inline-block mt-3 text-sm opacity-75">78 publicaciones →</span>
             </div>
         </div>
         
-        <!-- Feed de exploración -->
-        <div class="flex-1 space-y-6">
-            <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-4">
-                <h1 class="text-2xl font-bold text-[#1E1E1E]">Explorar</h1>
-                <p class="text-sm text-[#1E1E1E]/60">Descubre los hobbies más recientes</p>
-            </div>
-            
-            <!-- Grid de categorías (Página 5 del PDF) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Categoría 1 -->
-                <div class="bg-gradient-to-br from-[#8B5CF6] to-[#FFF59D] rounded-xl p-6 text-white">
-                    <h3 class="text-xl font-bold">🎨 Pintura de Miniaturas</h3>
-                    <p class="text-sm opacity-90 mt-1">Warhammer, D&D, modelos</p>
-                </div>
-                
-                <!-- Categoría 2 -->
-                <div class="bg-gradient-to-br from-[#1E1E1E] to-[#8B5CF6] rounded-xl p-6 text-white">
-                    <h3 class="text-xl font-bold">🎨 Murales & Graffiti</h3>
-                    <p class="text-sm opacity-90 mt-1">Arte urbano, sprays</p>
-                </div>
-                
-                <!-- Categoría 3 -->
-                <div class="bg-gradient-to-br from-[#FFF59D] to-[#D9D9D9] rounded-xl p-6 text-[#1E1E1E]">
-                    <h3 class="text-xl font-bold">🎵 Restauración de Vinilos</h3>
-                    <p class="text-sm opacity-90 mt-1">Música, tornamesas</p>
-                </div>
-                
-                <!-- Categoría 4 -->
-                <div class="bg-gradient-to-br from-[#8B5CF6] to-[#1E1E1E] rounded-xl p-6 text-white">
-                    <h3 class="text-xl font-bold">⌨️ Keycaps Mecánicos</h3>
-                    <p class="text-sm opacity-90 mt-1">Teclados personalizados</p>
-                </div>
-            </div>
-            
-            <!-- Publicaciones recientes -->
-            <div class="space-y-4">
-                <h2 class="text-xl font-bold text-[#1E1E1E]">Publicaciones recientes</h2>
-                
-                <% if (posts && posts.length > 0) { %>
-                    <% posts.forEach(post => { %>
-                        <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] overflow-hidden">
-                            <!-- Mismo formato de post que en home.ejs -->
-                            <div class="p-4 flex items-center gap-3 border-b border-[#D9D9D9]">
-                                <img src="<%= post.usuario.fotoPerfil %>" class="w-10 h-10 rounded-full object-cover">
-                                <div>
-                                    <a href="/profile/<%= post.usuario.username %>" class="font-semibold text-[#1E1E1E] hover:text-[#8B5CF6]">
-                                        <%= post.usuario.nombres %> <%= post.usuario.apellidos %>
-                                    </a>
-                                    <p class="text-xs text-[#1E1E1E]/60">@<%= post.usuario.username %></p>
-                                </div>
-                            </div>
-                            <img src="<%= post.imagenUrl %>" class="w-full max-h-[500px] object-cover">
-                            <div class="p-4">
-                                <% if (post.descripcion) { %>
-                                    <p class="text-[#1E1E1E]"><%= post.descripcion %></p>
-                                <% } %>
-                                <% if (post.etiquetas && post.etiquetas.length > 0) { %>
-                                    <div class="flex flex-wrap gap-1 mt-2">
-                                        <% post.etiquetas.forEach(tag => { %>
-                                            <a href="/feed/tag/<%= tag %>" class="text-[#8B5CF6] text-sm hover:underline">#<%= tag %></a>
-                                        <% }) %>
-                                    </div>
-                                <% } %>
-                            </div>
-                        </div>
-                    <% }) %>
-                <% } else { %>
-                    <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-8 text-center">
-                        <p class="text-[#1E1E1E]/60">No hay publicaciones aún. ¡Sé el primero en publicar!</p>
-                        <a href="/posts/create" class="inline-block mt-4 bg-[#8B5CF6] text-white px-6 py-2 rounded-lg hover:bg-[#8B5CF6]/90">
-                            Crear publicación
-                        </a>
-                    </div>
-                <% } %>
-            </div>
+        <!-- Botón para crear publicación -->
+        <div class="mt-8 text-center">
+            <a href="/posts/create" class="inline-block bg-[#8B5CF6] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#8B5CF6]/90 transition">
+                + Compartir mi hobby
+            </a>
         </div>
     </div>
 </div>

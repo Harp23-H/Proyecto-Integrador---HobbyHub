@@ -54,14 +54,15 @@ app.set('layout', 'layouts/main');
 const authRoutes = require('./src/routes/auth.routes');
 const feedRoutes = require('./src/routes/feed.routes');
 const postsRoutes = require('./src/routes/posts.routes');
-const profileRoutes = require('./src/routes/profile.routes');  // ← AGREGAR
+const profileRoutes = require('./src/routes/profile.routes');
+const locationRoutes = require('./src/routes/location.routes');
 
 // Usar rutas
 app.use('/auth', authRoutes);
 app.use('/feed', feedRoutes);
 app.use('/posts', postsRoutes);
-app.use('/profile', profileRoutes);  // ← AGREGAR
-
+app.use('/profile', profileRoutes); 
+app.use('/location', locationRoutes);
 
 // Ruta principal
 app.get('/', (req, res) => {

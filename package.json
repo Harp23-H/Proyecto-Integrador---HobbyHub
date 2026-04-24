@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/Harp23-H/Proyecto-Integrador---HobbyHub#readme",
   "dependencies": {
+    "@googlemaps/js-api-loader": "^2.0.2",
+    "axios": "^1.15.2",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^1.41.3",
     "cors": "^2.8.6",
