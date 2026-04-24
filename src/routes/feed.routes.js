@@ -15,18 +15,32 @@ const isAuthenticated = (req, res, next) => {
 // Página de explorar (pública) - Página 5 del PDF
 router.get('/explore', async (req, res) => {
     try {
+        const posts = await Post.findAll({
+            where: { isActive: true },
+            include: [{
+                model: User,  // ← SIN as
+                attributes: ['id', 'username', 'nombres', 'apellidos', 'fotoPerfil']
+            }],
+            order: [['created_at', 'DESC']],
+            limit: 20
+        });
+        
+        const popularTags = await getPopularTags();
+        
         res.render('feed/explore', {
             title: 'Explorar - HobbyHub',
-            popularTags: [],
-            posts: [],
-            user: req.user || null
+            user: req.user || null,
+            posts: posts || [],
+            popularTags: popularTags || []
         });
     } catch (error) {
         console.error('Error en explore:', error);
         res.render('feed/explore', {
             title: 'Explorar - HobbyHub',
             user: req.user || null,
-            error: 'Error al cargar la página'
+            posts: [],
+            popularTags: [],
+            error: 'Error al cargar el feed'
         });
     }
 });
@@ -39,7 +53,7 @@ router.get('/home', isAuthenticated, async (req, res) => {
         
         let posts = [];
         
-        if (userInterests.length > 0) {
+        if (userInterests && userInterests.length > 0) {
             const interestConditions = userInterests.map(interest => ({
                 etiquetas: { [Op.like]: `%${interest}%` }
             }));
@@ -50,8 +64,7 @@ router.get('/home', isAuthenticated, async (req, res) => {
                     [Op.or]: interestConditions
                 },
                 include: [{
-                    model: User,
-                    as: 'usuario',
+                    model: User,  // ← SIN as
                     attributes: ['id', 'username', 'nombres', 'apellidos', 'fotoPerfil']
                 }],
                 order: [['created_at', 'DESC']],
@@ -61,8 +74,7 @@ router.get('/home', isAuthenticated, async (req, res) => {
             posts = await Post.findAll({
                 where: { isActive: true },
                 include: [{
-                    model: User,
-                    as: 'usuario',
+                    model: User,  // ← SIN as
                     attributes: ['id', 'username', 'nombres', 'apellidos', 'fotoPerfil']
                 }],
                 order: [['likes_count', 'DESC'], ['created_at', 'DESC']],
@@ -77,7 +89,7 @@ router.get('/home', isAuthenticated, async (req, res) => {
             user: req.user,
             posts: posts,
             popularTags: popularTags,
-            userInterests: userInterests
+            userInterests: userInterests || []
         });
         
     } catch (error) {
@@ -104,8 +116,7 @@ router.get('/tag/:tag', async (req, res) => {
                 etiquetas: { [Op.like]: `%${tag}%` }
             },
             include: [{
-                model: User,
-                as: 'usuario',
+                model: User,  // ← SIN as
                 attributes: ['id', 'username', 'nombres', 'apellidos', 'fotoPerfil']
             }],
             order: [['created_at', 'DESC']],

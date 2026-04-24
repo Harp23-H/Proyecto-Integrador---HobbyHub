@@ -64,4 +64,6 @@ const Post = sequelize.define('Post', {
     updatedAt: 'updated_at'
 });
 
+// NO AGREGES ASOCIACIONES AQUÍ
+
 module.exports = Post;
