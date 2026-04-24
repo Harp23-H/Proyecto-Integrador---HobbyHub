@@ -53,18 +53,51 @@ const Enrollment = sequelize.define('Enrollment', {
     },
     // Estado de la inscripción
     estado: {
-        type: DataTypes.ENUM('pendiente', 'confirmado', 'cancelado', 'completado'),
+        type: DataTypes.ENUM('pendiente', 'confirmado', 'en_progreso', 'completado', 'cancelado'),
         defaultValue: 'pendiente'
     },
+    // Progreso del alumno
+    progreso: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        comment: 'Porcentaje de progreso (0-100)'
+    },
+    calificacion: {
+        type: DataTypes.DECIMAL(2, 1),
+        defaultValue: null,
+        validate: { min: 0, max: 5 }
+    },
+    // Fechas importantes
     fechaInscripcion: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
         field: 'fecha_inscripcion'
     },
-    // Comentarios adicionales
+    fechaInicio: {
+        type: DataTypes.DATE,
+        defaultValue: null,
+        field: 'fecha_inicio'
+    },
+    fechaCompletado: {
+        type: DataTypes.DATE,
+        defaultValue: null,
+        field: 'fecha_completado'
+    },
+    // Comentarios y feedback
     comentarios: {
         type: DataTypes.TEXT,
         defaultValue: null
+    },
+    feedbackExperto: {
+        type: DataTypes.TEXT,
+        defaultValue: null,
+        field: 'feedback_experto'
+    },
+    // Certificado
+    certificadoUrl: {
+        type: DataTypes.STRING(500),
+        defaultValue: null,
+        field: 'certificado_url'
     }
 }, {
     tableName: 'enrollments',
@@ -72,5 +105,11 @@ const Enrollment = sequelize.define('Enrollment', {
     createdAt: 'created_at',
     updatedAt: 'updated_at'
 });
+
+// Asociaciones
+Enrollment.associate = (models) => {
+    Enrollment.belongsTo(models.Course, { foreignKey: 'cursoId', as: 'curso' });
+    Enrollment.belongsTo(models.User, { foreignKey: 'alumnoId', as: 'alumno' });
+};
 
 module.exports = Enrollment;

@@ -13,6 +13,19 @@ const isAuthenticated = (req, res, next) => {
 };
 
 // ===== PÁGINAS DE PERFIL =====
+// Hacerse experto
+router.post('/me/make-expert', isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findByPk(req.user.id);
+        user.esExperto = true;
+        await user.save();
+        
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Error al actualizar' });
+    }
+});
 
 // Ver perfil de otro usuario (Página 13 del PDF)
 router.get('/:username', async (req, res) => {
