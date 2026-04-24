@@ -17,6 +17,8 @@ router.get('/explore', async (req, res) => {
     try {
         res.render('feed/explore', {
             title: 'Explorar - HobbyHub',
+            popularTags: [],
+            posts: [],
             user: req.user || null
         });
     } catch (error) {

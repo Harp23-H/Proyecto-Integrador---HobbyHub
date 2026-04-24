@@ -78,6 +78,8 @@ app.post('/payments/webhook', express.raw({ type: 'application/json' }), (req, r
 app.get('/', (req, res) => {
   res.render('feed/explore', { 
     title: 'Explora por categoría - HobbyHub',
+    popularTags: [],
+    posts: [],
     user: req.user
   });
 });

@@ -1,4 +1,5 @@
 const { Loader } = require('@googlemaps/js-api-loader');
+require('dotenv').config();
 
 let mapLoader = null;
 
