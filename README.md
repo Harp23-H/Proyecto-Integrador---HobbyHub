@@ -23,7 +23,7 @@ HobbyHub es una plataforma web enfocada en hobbies nicho y poco comunes, esos qu
 
 ##  Planeación del proyecto
 
-![Organigrama](imagenes/gant.jpeg.png)
+![Organigrama](imagenes/gant.jpeg)
 
 ---
 #### Consideraciones:
