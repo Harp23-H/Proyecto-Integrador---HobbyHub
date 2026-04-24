@@ -15,33 +15,16 @@ const isAuthenticated = (req, res, next) => {
 // Página de explorar (pública) - Página 5 del PDF
 router.get('/explore', async (req, res) => {
     try {
-        const posts = await Post.findAll({
-            where: { isActive: true },
-            include: [{
-                model: User,
-                as: 'usuario',
-                attributes: ['id', 'username', 'nombres', 'apellidos', 'fotoPerfil']
-            }],
-            order: [['created_at', 'DESC']],
-            limit: 20
-        });
-        
-        const popularTags = await getPopularTags();
-        
         res.render('feed/explore', {
             title: 'Explorar - HobbyHub',
-            user: req.user || null,
-            posts: posts || [],
-            popularTags: popularTags || []
+            user: req.user || null
         });
     } catch (error) {
         console.error('Error en explore:', error);
         res.render('feed/explore', {
             title: 'Explorar - HobbyHub',
             user: req.user || null,
-            posts: [],
-            popularTags: [],
-            error: 'Error al cargar el feed'
+            error: 'Error al cargar la página'
         });
     }
 });
