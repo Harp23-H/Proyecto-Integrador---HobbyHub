@@ -1,41 +1,58 @@
 <div class="max-w-6xl mx-auto">
+    <!-- Tags populares (sidebar superior) -->
+    <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-4 mb-6">
+        <h3 class="font-semibold text-[#1E1E1E] mb-3">🔥 Tendencias</h3>
+        <div class="flex flex-wrap gap-2">
+            <% if (popularTags && popularTags.length > 0) { %>
+                <% popularTags.forEach(tag => { %>
+                    <a href="/feed/tag/<%= tag.tag %>" 
+                       class="bg-[#EDE9FE] text-[#8B5CF6] px-3 py-1 rounded-full text-sm hover:bg-[#C4B5FD] transition">
+                        #<%= tag.tag %> (<%= tag.count %>)
+                    </a>
+                <% }) %>
+            <% } else { %>
+                <span class="text-sm text-[#1E1E1E]/60">Cargando tendencias...</span>
+            <% } %>
+        </div>
+    </div>
+
     <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-6">
         <h1 class="text-3xl font-bold text-[#1E1E1E] mb-4">Explorar HobbyHub</h1>
         <p class="text-[#1E1E1E]/60 mb-8">Descubre y comparte tus hobbies favoritos</p>
         
         <!-- Grid de categorías -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD] rounded-xl p-6 text-white hover:shadow-lg transition">
+            <div class="bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD] rounded-xl p-6 text-white hover:shadow-lg transition cursor-pointer">
                 <h3 class="text-xl font-bold">🎨 Pintura de Miniaturas</h3>
                 <p class="text-sm opacity-90 mt-1">Warhammer, D&D, modelos 3D</p>
                 <span class="inline-block mt-3 text-sm opacity-75">124 publicaciones →</span>
             </div>
             
-            <div class="bg-gradient-to-br from-[#1E1E1E] to-[#8B5CF6] rounded-xl p-6 text-white hover:shadow-lg transition">
+            <div class="bg-gradient-to-br from-[#1E1E1E] to-[#8B5CF6] rounded-xl p-6 text-white hover:shadow-lg transition cursor-pointer">
                 <h3 class="text-xl font-bold">🎨 Murales & Graffiti</h3>
                 <p class="text-sm opacity-90 mt-1">Arte urbano, sprays, murales</p>
                 <span class="inline-block mt-3 text-sm opacity-75">89 publicaciones →</span>
             </div>
             
-            <div class="bg-gradient-to-br from-[#C4B5FD] to-[#D9D9D9] rounded-xl p-6 text-[#1E1E1E] hover:shadow-lg transition">
+            <div class="bg-gradient-to-br from-[#C4B5FD] to-[#D9D9D9] rounded-xl p-6 text-[#1E1E1E] hover:shadow-lg transition cursor-pointer">
                 <h3 class="text-xl font-bold">🎵 Restauración de Vinilos</h3>
                 <p class="text-sm opacity-90 mt-1">Música clásica, tornamesas</p>
                 <span class="inline-block mt-3 text-sm opacity-75">56 publicaciones →</span>
             </div>
             
-            <div class="bg-gradient-to-br from-[#8B5CF6] to-[#1E1E1E] rounded-xl p-6 text-white hover:shadow-lg transition">
+            <div class="bg-gradient-to-br from-[#8B5CF6] to-[#1E1E1E] rounded-xl p-6 text-white hover:shadow-lg transition cursor-pointer">
                 <h3 class="text-xl font-bold">⌨️ Keycaps Mecánicos</h3>
                 <p class="text-sm opacity-90 mt-1">Teclados personalizados, diseño</p>
                 <span class="inline-block mt-3 text-sm opacity-75">203 publicaciones →</span>
             </div>
             
-            <div class="bg-gradient-to-br from-[#8B5CF6] to-[#6B21A5] rounded-xl p-6 text-white hover:shadow-lg transition">
+            <div class="bg-gradient-to-br from-[#8B5CF6] to-[#6B21A5] rounded-xl p-6 text-white hover:shadow-lg transition cursor-pointer">
                 <h3 class="text-xl font-bold">🤖 Cosplay</h3>
                 <p class="text-sm opacity-90 mt-1">Disfraces, convenciones, DIY</p>
                 <span class="inline-block mt-3 text-sm opacity-75">167 publicaciones →</span>
             </div>
             
-            <div class="bg-gradient-to-br from-[#1E1E1E] to-[#4C1D95] rounded-xl p-6 text-white hover:shadow-lg transition">
+            <div class="bg-gradient-to-br from-[#1E1E1E] to-[#4C1D95] rounded-xl p-6 text-white hover:shadow-lg transition cursor-pointer">
                 <h3 class="text-xl font-bold"> Terrarios</h3>
                 <p class="text-sm opacity-90 mt-1">Plantas, mini jardines, decoración</p>
                 <span class="inline-block mt-3 text-sm opacity-75">78 publicaciones →</span>
@@ -49,4 +66,150 @@
             </a>
         </div>
     </div>
+
+    <!-- Publicaciones recientes -->
+    <div class="mt-8">
+        <h2 class="text-2xl font-bold text-[#1E1E1E] mb-6">📱 Publicaciones recientes</h2>
+        
+        <% if (posts && posts.length > 0) { %>
+            <div class="space-y-6">
+                <% posts.forEach(post => { %>
+                    <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] overflow-hidden">
+                        <!-- Header del post con botón de reportar -->
+                        <div class="p-4 flex items-center justify-between border-b border-[#D9D9D9]">
+                            <div class="flex items-center gap-3">
+                                <img src="<%= post.usuario ? post.usuario.fotoPerfil : '/images/default-avatar.png' %>" 
+                                     class="w-10 h-10 rounded-full object-cover">
+                                <div>
+                                    <a href="/profile/<%= post.usuario ? post.usuario.username : '#' %>" 
+                                       class="font-semibold text-[#1E1E1E] hover:text-[#8B5CF6]">
+                                        <%= post.usuario ? (post.usuario.nombres + ' ' + post.usuario.apellidos) : 'Usuario' %>
+                                    </a>
+                                    <p class="text-xs text-[#1E1E1E]/60">
+                                        @<%= post.usuario ? post.usuario.username : 'desconocido' %>
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Botón de reportar (3 puntos) -->
+                            <div class="relative">
+                                <button onclick="toggleReportMenu(<%= post.id %>)" 
+                                        class="text-[#1E1E1E]/40 hover:text-red-500 transition p-1">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                                    </svg>
+                                </button>
+                                <div id="reportMenu-<%= post.id %>" 
+                                     class="hidden absolute right-0 mt-2 w-48 bg-white border border-[#D9D9D9] rounded-lg shadow-lg z-10">
+                                    <a href="/reports/create/publicacion/<%= post.id %>" 
+                                       class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg">
+                                        🚨 Reportar publicación
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Imagen del post -->
+                        <img src="<%= post.imagenUrl %>" class="w-full max-h-[500px] object-cover">
+                        
+                        <!-- Contenido del post -->
+                        <div class="p-4">
+                            <!-- Botones de interacción -->
+                            <div class="flex gap-4 mb-3">
+                                <button onclick="likePost(<%= post.id %>)" class="flex items-center gap-1 text-[#1E1E1E]/60 hover:text-red-500 transition">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                    <span id="likes-<%= post.id %>"><%= post.likesCount || 0 %></span>
+                                </button>
+                                <button class="flex items-center gap-1 text-[#1E1E1E]/60 hover:text-[#8B5CF6] transition">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                    </svg>
+                                    <span><%= post.comentariosCount || 0 %></span>
+                                </button>
+                            </div>
+                            
+                            <!-- Descripción -->
+                            <% if (post.descripcion) { %>
+                                <p class="text-[#1E1E1E] mb-2"><%= post.descripcion %></p>
+                            <% } %>
+                            
+                            <!-- Etiquetas -->
+                            <% if (post.etiquetas && post.etiquetas.length > 0) { %>
+                                <div class="flex flex-wrap gap-1 mb-2">
+                                    <% post.etiquetas.forEach(tag => { %>
+                                        <a href="/feed/tag/<%= tag %>" class="text-[#8B5CF6] text-sm hover:underline">#<%= tag %></a>
+                                    <% }) %>
+                                </div>
+                            <% } %>
+                            
+                            <!-- Fecha -->
+                            <p class="text-xs text-[#1E1E1E]/40 mt-2">
+                                <%= new Date(post.created_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' }) %>
+                            </p>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-12 text-center">
+                <svg class="w-16 h-16 mx-auto text-[#D9D9D9] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                <p class="text-[#1E1E1E]/60 text-lg">No hay publicaciones aún</p>
+                <p class="text-[#1E1E1E]/40 mt-2">¡Sé el primero en compartir tu hobby!</p>
+                <a href="/posts/create" class="inline-block mt-6 bg-[#8B5CF6] text-white px-6 py-2 rounded-lg hover:bg-[#8B5CF6]/90">
+                    + Crear publicación
+                </a>
+            </div>
+        <% } %>
+    </div>
 </div>
+
+<!-- Scripts -->
+<script>
+// Cerrar menú al hacer clic fuera
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('.relative')) {
+        document.querySelectorAll('[id^="reportMenu-"]').forEach(menu => {
+            menu.classList.add('hidden');
+        });
+    }
+});
+
+// Toggle menú de reportar
+function toggleReportMenu(postId) {
+    const menu = document.getElementById(`reportMenu-${postId}`);
+    if (menu) {
+        // Cerrar otros menús
+        document.querySelectorAll('[id^="reportMenu-"]').forEach(m => {
+            if (m.id !== `reportMenu-${postId}`) {
+                m.classList.add('hidden');
+            }
+        });
+        menu.classList.toggle('hidden');
+    }
+}
+
+// Dar like
+async function likePost(postId) {
+    try {
+        const response = await fetch(`/posts/${postId}/like`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            const likesSpan = document.getElementById(`likes-${postId}`);
+            if (likesSpan) {
+                likesSpan.textContent = data.likesCount;
+            }
+        }
+    } catch (error) {
+        console.error('Error al dar like:', error);
+    }
+}
+</script>
