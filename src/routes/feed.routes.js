@@ -76,6 +76,7 @@ router.get('/home', isAuthenticated, async (req, res) => {
                 where: { isActive: true },
                 include: [{
                     model: User,  // ← SIN as
+                    as: 'usuario',
                     attributes: ['id', 'username', 'nombres', 'apellidos', 'fotoPerfil']
                 }],
                 order: [['likes_count', 'DESC'], ['created_at', 'DESC']],
