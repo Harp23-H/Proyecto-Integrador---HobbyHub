@@ -1,4 +1,4 @@
-<nav class="bg-white shadow-sm border-b border-[#D9D9D9]">
+<nav class="bg-white shadow-sm border-b border-[#D9D9D9] sticky top-0 z-50">
     <div class="container mx-auto px-4">
         <div class="flex justify-between items-center h-16">
             <!-- Logo -->
@@ -17,25 +17,95 @@
             
             <!-- Menú -->
             <div class="flex items-center space-x-4">
-                
-                <a href="/my-courses" class="text-[#1E1E1E] hover:text-[#8B5CF6] transition">
-                    Cursos
-                </a>
-                
-                <a href="/feed/explore" class="text-[#1E1E1E] hover:text-[#8B5CF6] transition">
-                    Explorar
-                </a>
-
                 <% if (user) { %>
-                    <a href="/feed/home" class="text-[#1E1E1E] hover:text-[#8B5CF6] transition">
-                        Inicio
+                    <a href="/feed/explore" class="text-[#1E1E1E] hover:text-[#8B5CF6] transition hidden md:block">
+                        Explorar
                     </a>
-                    <a href="/posts/create" class="text-[#1E1E1E] hover:text-[#8B5CF6] transition">
+                    <a href="/courses/explore" class="text-[#1E1E1E] hover:text-[#8B5CF6] transition hidden md:block">
+                        Cursos
+                    </a>
+                    <a href="/posts/create" class="text-[#1E1E1E] hover:text-[#8B5CF6] transition hidden md:block">
                         + Crear
                     </a>
-                    <a href="/profile/me/profile" class="flex items-center gap-2">
-                        <img src="<%= user.fotoPerfil %>" class="w-8 h-8 rounded-full object-cover">
-                    </a>
+                    
+                    <!-- Dropdown del perfil -->
+                    <div class="relative" id="profileDropdown">
+                        <button onclick="toggleDropdown()" 
+                                class="flex items-center gap-2 focus:outline-none hover:opacity-80 transition">
+                            <img src="<%= user.fotoPerfil || '/images/default-avatar.png' %>" 
+                                 class="w-9 h-9 rounded-full object-cover border-2 border-[#8B5CF6]">
+                            <span class="hidden md:inline text-[#1E1E1E] font-medium"><%= user.nombres %></span>
+                            <svg class="w-4 h-4 text-[#1E1E1E]/60 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        
+                        <!-- Menú desplegable -->
+                        <div id="dropdownMenu" 
+                             class="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-[#D9D9D9] hidden z-10 overflow-hidden">
+                            
+                            <!-- Header del dropdown -->
+                            <div class="p-4 border-b border-[#D9D9D9] bg-[#EDE9FE]">
+                                <div class="flex items-center gap-3">
+                                    <img src="<%= user.fotoPerfil || '/images/default-avatar.png' %>" 
+                                         class="w-10 h-10 rounded-full object-cover">
+                                    <div>
+                                        <p class="font-semibold text-[#1E1E1E]"><%= user.nombres %> <%= user.apellidos %></p>
+                                        <p class="text-sm text-[#1E1E1E]/60">@<%= user.username %></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Opciones del menú -->
+                            <div class="py-2">
+                                <a href="/feed/home" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition md:hidden">
+                                    <svg class="w-5 h-5 text-[#1E1E1E]/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                    </svg>
+                                    <span>Inicio</span>
+                                </a>
+                                
+                                <a href="/profile/me/profile" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition">
+                                    <svg class="w-5 h-5 text-[#1E1E1E]/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                    <span>Mi perfil</span>
+                                </a>
+                                
+                                <a href="/dashboard" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition">
+                                    <svg class="w-5 h-5 text-[#1E1E1E]/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                                    </svg>
+                                    <span>Dashboard</span>
+                                </a>
+                                
+                                <a href="/enrollment/my/enrollments" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition">
+                                    <svg class="w-5 h-5 text-[#1E1E1E]/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                    </svg>
+                                    <span>Mis cursos</span>
+                                </a>
+                                
+                                <a href="/posts/create" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition md:hidden">
+                                    <svg class="w-5 h-5 text-[#1E1E1E]/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    <span>Crear publicación</span>
+                                </a>
+                                
+                                <hr class="my-2 border-[#D9D9D9]">
+                                
+                                <!-- Cerrar sesión -->
+                                <a href="/auth/logout" 
+                                   class="flex items-center gap-3 px-4 py-2 hover:bg-red-50 transition text-red-500">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                    </svg>
+                                    <span>Cerrar sesión</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 <% } else { %>
                     <a href="/auth/login" class="text-[#1E1E1E] hover:text-[#8B5CF6] transition">
                         Iniciar sesión
@@ -48,3 +118,33 @@
         </div>
     </div>
 </nav>
+
+<!-- Scripts del dropdown -->
+<script>
+    function toggleDropdown() {
+        const menu = document.getElementById('dropdownMenu');
+        if (menu) {
+            menu.classList.toggle('hidden');
+        }
+    }
+    
+    // Cerrar dropdown al hacer clic fuera
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('profileDropdown');
+        const menu = document.getElementById('dropdownMenu');
+        
+        if (dropdown && menu && !dropdown.contains(event.target)) {
+            menu.classList.add('hidden');
+        }
+    });
+    
+    // Cerrar con tecla ESC
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const menu = document.getElementById('dropdownMenu');
+            if (menu) {
+                menu.classList.add('hidden');
+            }
+        }
+    });
+</script>

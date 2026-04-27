@@ -1,0 +1,203 @@
+<div class="max-w-7xl mx-auto">
+    <!-- Hero / Banner -->
+    <div class="bg-gradient-to-r from-[#8B5CF6] to-[#C4B5FD] rounded-2xl p-8 mb-8 text-white">
+        <h1 class="text-3xl md:text-4xl font-bold mb-2">Explora Cursos y Talleres</h1>
+        <p class="text-lg opacity-90 mb-6">Aprende nuevos hobbies directamente de creadores apasionados</p>
+        
+        <form method="GET" action="/courses/explore" class="max-w-2xl">
+            <div class="flex gap-2">
+                <input type="text" name="search" value="<%= filtros.search || '' %>" 
+                       placeholder="Buscar por título o descripción..."
+                       class="flex-1 px-4 py-3 rounded-lg text-[#1E1E1E] focus:outline-none">
+                <button type="submit" class="bg-white text-[#8B5CF6] px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                    🔍 Buscar
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="flex flex-col lg:flex-row gap-6">
+        <!-- Sidebar con filtros -->
+        <div class="lg:w-72 space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-4">
+                <h3 class="font-semibold text-[#1E1E1E] mb-3">Modalidad</h3>
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="modalidad" value="todos" 
+                               <%= !filtros.modalidad || filtros.modalidad === 'todos' ? 'checked' : '' %>
+                               onchange="aplicarFiltro('modalidad', 'todos')">
+                        <span>Todos</span>
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="modalidad" value="presencial" 
+                               <%= filtros.modalidad === 'presencial' ? 'checked' : '' %>
+                               onchange="aplicarFiltro('modalidad', 'presencial')">
+                        <span>Presencial</span>
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="modalidad" value="online" 
+                               <%= filtros.modalidad === 'online' ? 'checked' : '' %>
+                               onchange="aplicarFiltro('modalidad', 'online')">
+                        <span>En línea</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-4">
+                <h3 class="font-semibold text-[#1E1E1E] mb-3">Nivel</h3>
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="nivel" value="todos" 
+                               <%= !filtros.nivel || filtros.nivel === 'todos' ? 'checked' : '' %>
+                               onchange="aplicarFiltro('nivel', 'todos')">
+                        <span>Todos</span>
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="nivel" value="principiante" 
+                               <%= filtros.nivel === 'principiante' ? 'checked' : '' %>
+                               onchange="aplicarFiltro('nivel', 'principiante')">
+                        <span>Principiante</span>
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="nivel" value="intermedio" 
+                               <%= filtros.nivel === 'intermedio' ? 'checked' : '' %>
+                               onchange="aplicarFiltro('nivel', 'intermedio')">
+                        <span>Intermedio</span>
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="nivel" value="avanzado" 
+                               <%= filtros.nivel === 'avanzado' ? 'checked' : '' %>
+                               onchange="aplicarFiltro('nivel', 'avanzado')">
+                        <span>Avanzado</span>
+                    </label>
+                </div>
+            </div>
+            
+            <% if (filtros.modalidad || filtros.nivel || filtros.search) { %>
+                <a href="/courses/explore" class="block text-center text-[#8B5CF6] hover:underline">
+                    Limpiar filtros ✕
+                </a>
+            <% } %>
+        </div>
+        
+        <!-- Grid de cursos -->
+        <div class="flex-1">
+            <div class="mb-4">
+                <p class="text-[#1E1E1E]/60">
+                    <span class="font-bold text-[#1E1E1E]"><%= courses.length %></span> cursos encontrados
+                </p>
+            </div>
+            
+            <% if (error) { %>
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    <%= error %>
+                </div>
+            <% } %>
+            
+            <% if (courses && courses.length > 0) { %>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <% courses.forEach(course => { %>
+                        <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] overflow-hidden hover:shadow-md transition group">
+                            <div class="relative">
+                                <img src="<%= course.imagenUrl %>" class="w-full h-48 object-cover">
+                                <span class="absolute top-2 right-2 px-2 py-1 bg-black/70 text-white text-xs rounded-full">
+                                    <%= course.modalidad === 'presencial' ? '📍 Presencial' : '💻 Online' %>
+                                </span>
+                            </div>
+                            
+                            <div class="p-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <img src="<%= course.experto && course.experto.fotoPerfil ? course.experto.fotoPerfil : '/images/default-avatar.png' %>" 
+                                         class="w-6 h-6 rounded-full">
+                                    <span class="text-xs text-[#1E1E1E]/60">
+                                        @<%= course.experto && course.experto.username ? course.experto.username : 'usuario' %>
+                                    </span>
+                                </div>
+                                
+                                <h3 class="font-bold text-lg text-[#1E1E1E] mb-1">
+                                    <a href="/courses/<%= course.id %>" class="hover:text-[#8B5CF6]">
+                                        <%= course.titulo %>
+                                    </a>
+                                </h3>
+                                
+                                <p class="text-sm text-[#1E1E1E]/60 mb-3">
+                                    <%= course.descricion ? course.descripcion.substring(0, 80) + '...' : '' %>
+                                </p>
+                                
+                                <div class="flex items-center justify-between text-sm mb-3">
+                                    <div class="flex items-center gap-1">
+                                        <!-- Rating -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                          <path d="M12 17.3l-6.2 3.7 1.7-7.1L2 9.2l7.2-.6L12 2l2.8 6.6 7.2.6-5.5 4.7 1.7 7.1z"/>
+                                        </svg>
+                                        <span><%= course.rating || 'Nuevo' %></span>
+                                      </div>
+                                      
+                                      <div class="flex items-center gap-1">
+                                        <!-- Duración -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                          <rect x="4" y="10" width="3" height="10"/>
+                                          <rect x="10.5" y="4" width="3" height="16"/>
+                                          <rect x="17" y="13" width="3" height="7"/>
+                                        </svg>
+                                        <span><%= course.duracion || '?' %> hrs</span>
+                                      </div>
+                                      
+                                      <div class="flex items-center gap-1">
+                                        <!-- Nivel -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                          <path d="M4 19h16"/>
+                                          <path d="M6 17V9"/>
+                                          <path d="M12 17V5"/>
+                                          <path d="M18 17v-6"/>
+                                        </svg>
+                                        <span><%= course.nivel || 'principiante' %></span>
+                                      </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <span class="text-2xl font-bold text-[#8B5CF6]">$<%= course.precio %></span>
+                                    <a href="/courses/<%= course.id %>" 
+                                       class="bg-[#8B5CF6] text-white px-4 py-2 rounded-lg text-sm hover:bg-[#8B5CF6]/90 transition">
+                                        Ver más
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-12 text-center">
+                    <svg class="w-16 h-16 mx-auto text-[#D9D9D9] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h3 class="text-xl font-semibold text-[#1E1E1E] mb-2">No se encontraron cursos</h3>
+                    <p class="text-[#1E1E1E]/60 mb-4">Intenta con otros filtros o crea tu primer curso</p>
+                    <% if (user) { %>
+                        <a href="/courses/create" class="inline-block bg-[#8B5CF6] text-white px-6 py-2 rounded-lg hover:bg-[#8B5CF6]/90">
+                            Crear mi primer curso
+                        </a>
+                    <% } else { %>
+                        <a href="/auth/login" class="inline-block bg-[#8B5CF6] text-white px-6 py-2 rounded-lg hover:bg-[#8B5CF6]/90">
+                            Iniciar sesión para crear un curso
+                        </a>
+                    <% } %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<script>
+function aplicarFiltro(tipo, valor) {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (valor === 'todos') {
+        urlParams.delete(tipo);
+    } else {
+        urlParams.set(tipo, valor);
+    }
+    
+    window.location.href = `/courses/explore?${urlParams.toString()}`;
+}
+</script>

@@ -1,0 +1,364 @@
+<div class="max-w-3xl mx-auto">
+    <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-[#1E1E1E]">Editar curso</h1>
+            <a href="/courses/<%= course.id %>" class="text-[#1E1E1E]/60 hover:text-[#1E1E1E]">✕</a>
+        </div>
+        
+        <% if (errors && errors.length > 0) { %>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <% errors.forEach(error => { %>
+                    <p><%= error.msg %></p>
+                <% }) %>
+            </div>
+        <% } %>
+        
+        <div id="alertMessage" class="hidden mb-4"></div>
+        
+        <form id="editCourseForm">
+            <div class="space-y-6">
+                <!-- Imagen del curso -->
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Imagen del curso
+                    </label>
+                    <div class="flex gap-4 items-start">
+                        <img id="previewImage" src="<%= course.imagenUrl %>" 
+                             class="w-32 h-32 object-cover rounded-lg">
+                        <div class="flex-1">
+                            <input type="file" id="imagenInput" accept="image/*" class="hidden">
+                            <button type="button" onclick="document.getElementById('imagenInput').click()" 
+                                    class="bg-[#EDE9FE] text-[#8B5CF6] px-4 py-2 rounded-lg text-sm hover:bg-[#EDE9FE]/80">
+                                Cambiar imagen
+                            </button>
+                            <p class="text-xs text-[#1E1E1E]/50 mt-2">JPG, PNG, GIF hasta 5MB</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Título -->
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Título del curso *
+                    </label>
+                    <input type="text" id="titulo" name="titulo" value="<%= course.titulo %>" required
+                           class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent outline-none">
+                </div>
+                
+                <!-- Descripción -->
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Descripción *
+                    </label>
+                    <textarea id="descripcion" name="descripcion" rows="4" required
+                              class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent outline-none"><%= course.descripcion %></textarea>
+                </div>
+                
+                <!-- Modalidad -->
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Modalidad *
+                    </label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="modalidad" value="presencial" 
+                                   <%= course.modalidad === 'presencial' ? 'checked' : '' %>
+                                   onchange="toggleModalidad()">
+                            <span>📍 Presencial</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="modalidad" value="online" 
+                                   <%= course.modalidad === 'online' ? 'checked' : '' %>
+                                   onchange="toggleModalidad()">
+                            <span>💻 En línea</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Campos presenciales -->
+                <div id="presencialFields" style="<%= course.modalidad === 'presencial' ? 'display: block;' : 'display: none;' %>">
+                    <div class="bg-[#EDE9FE] p-4 rounded-lg space-y-4">
+                        <h3 class="font-semibold text-[#1E1E1E]">Información presencial</h3>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                                Dirección
+                            </label>
+                            <input type="text" id="direccion" name="direccion" value="<%= course.direccion || '' %>"
+                                   class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                                Requisitos para asistentes (uno por línea)
+                            </label>
+                            <textarea id="requisitos" name="requisitos" rows="3"
+                                      class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg"><%= (course.requisitos || []).join('\n') %></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Campos online -->
+                <div id="onlineFields" style="<%= course.modalidad === 'online' ? 'display: block;' : 'display: none;' %>">
+                    <div class="bg-[#EDE9FE] p-4 rounded-lg space-y-4">
+                        <h3 class="font-semibold text-[#1E1E1E]">Información en línea</h3>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                                Plataforma
+                            </label>
+                            <select id="plataforma" name="plataforma" class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg">
+                                <option value="zoom" <%= course.plataforma === 'zoom' ? 'selected' : '' %>>Zoom</option>
+                                <option value="meet" <%= course.plataforma === 'meet' ? 'selected' : '' %>>Google Meet</option>
+                                <option value="teams" <%= course.plataforma === 'teams' ? 'selected' : '' %>>Microsoft Teams</option>
+                                <option value="otro" <%= course.plataforma === 'otro' ? 'selected' : '' %>>Otro</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                                Enlace de reunión
+                            </label>
+                            <input type="url" id="enlaceReunion" name="enlaceReunion" value="<%= course.enlaceReunion || '' %>"
+                                   class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Nivel y duración -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                            Nivel
+                        </label>
+                        <select id="nivel" name="nivel" class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg">
+                            <option value="principiante" <%= course.nivel === 'principiante' ? 'selected' : '' %>>Principiante</option>
+                            <option value="intermedio" <%= course.nivel === 'intermedio' ? 'selected' : '' %>>Intermedio</option>
+                            <option value="avanzado" <%= course.nivel === 'avanzado' ? 'selected' : '' %>>Avanzado</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                            Duración (horas)
+                        </label>
+                        <input type="number" id="duracion" name="duracion" value="<%= course.duracion || '' %>" step="1"
+                               class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg">
+                    </div>
+                </div>
+                
+                <!-- Horario -->
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Horario general
+                    </label>
+                    <input type="text" id="horario" name="horario" value="<%= course.horario || '' %>"
+                           class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg"
+                           placeholder="Ej: Sábado 4:00 PM - Domingo 11:00 AM">
+                </div>
+                
+                <!-- Horarios disponibles -->
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Horarios disponibles (separados por comas)
+                    </label>
+                    <input type="text" id="horariosDisponibles" name="horariosDisponibles" 
+                           value="<%= (course.horariosDisponibles || []).join(', ') %>"
+                           class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg"
+                           placeholder="Lunes 2:30 PM, Martes 4:30 PM, Miércoles 1:30 PM">
+                </div>
+                
+                <!-- Materiales -->
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Materiales necesarios (separados por comas)
+                    </label>
+                    <input type="text" id="materiales" name="materiales" 
+                           value="<%= (course.materiales || []).join(', ') %>"
+                           class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg"
+                           placeholder="Guitarra, Púa, Capotraste">
+                </div>
+                
+                <!-- Módulos -->
+                <div>
+                    <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                        Módulos del curso (uno por línea)
+                    </label>
+                    <textarea id="modulos" name="modulos" rows="4"
+                              class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg"
+                              placeholder="Módulo 1: Introducción&#10;Módulo 2: Postura&#10;Módulo 3: Mini práctica"><%= (course.modulos || []).join('\n') %></textarea>
+                </div>
+                
+                <!-- Precio y cupo -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                            Precio (MXN)
+                        </label>
+                        <input type="number" id="precio" name="precio" value="<%= course.precio %>" step="0.01" required
+                               class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                            Cupo máximo
+                        </label>
+                        <input type="number" id="cupoMaximo" name="cupoMaximo" value="<%= course.cupoMaximo %>"
+                               class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg">
+                    </div>
+                </div>
+                
+                <!-- Fechas -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                            Fecha de inicio
+                        </label>
+                        <input type="date" id="fechaInicio" name="fechaInicio" 
+                               value="<%= course.fechaInicio ? new Date(course.fechaInicio).toISOString().split('T')[0] : '' %>"
+                               class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-[#1E1E1E] mb-2">
+                            Fecha de fin
+                        </label>
+                        <input type="date" id="fechaFin" name="fechaFin" 
+                               value="<%= course.fechaFin ? new Date(course.fechaFin).toISOString().split('T')[0] : '' %>"
+                               class="w-full px-4 py-3 border border-[#D9D9D9] rounded-lg">
+                    </div>
+                </div>
+                
+                <!-- Botones -->
+                <div class="flex gap-3 pt-4">
+                    <button type="submit" id="submitBtn" 
+                            class="flex-1 bg-[#8B5CF6] text-white py-3 rounded-lg font-semibold hover:bg-[#8B5CF6]/90 transition">
+                        Guardar cambios
+                    </button>
+                    <a href="/courses/<%= course.id %>" 
+                       class="flex-1 border border-[#D9D9D9] text-[#1E1E1E] py-3 rounded-lg font-semibold text-center hover:bg-gray-50 transition">
+                        Cancelar
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Subir imagen
+document.getElementById('imagenInput').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const formData = new FormData();
+    formData.append('imagen', file);
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Subiendo imagen...';
+    submitBtn.disabled = true;
+    
+    try {
+        const response = await fetch(`/courses/<%= course.id %>/upload-image`, {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            document.getElementById('previewImage').src = data.imageUrl + '?t=' + Date.now();
+            mostrarAlerta('Imagen actualizada correctamente', 'success');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        mostrarAlerta('Error al subir la imagen', 'error');
+    } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
+});
+
+// Toggle modalidad
+function toggleModalidad() {
+    const modalidad = document.querySelector('input[name="modalidad"]:checked').value;
+    const presencialFields = document.getElementById('presencialFields');
+    const onlineFields = document.getElementById('onlineFields');
+    
+    if (modalidad === 'presencial') {
+        presencialFields.style.display = 'block';
+        onlineFields.style.display = 'none';
+    } else {
+        presencialFields.style.display = 'none';
+        onlineFields.style.display = 'block';
+    }
+}
+
+// Mostrar alerta
+function mostrarAlerta(mensaje, tipo) {
+    const alertDiv = document.getElementById('alertMessage');
+    alertDiv.textContent = mensaje;
+    alertDiv.className = `mb-4 px-4 py-3 rounded ${tipo === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`;
+    alertDiv.classList.remove('hidden');
+    
+    setTimeout(() => {
+        alertDiv.classList.add('hidden');
+    }, 3000);
+}
+
+// Guardar cambios
+document.getElementById('editCourseForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Guardando...';
+    submitBtn.disabled = true;
+    
+    const formData = {
+        titulo: document.getElementById('titulo').value,
+        descripcion: document.getElementById('descripcion').value,
+        modalidad: document.querySelector('input[name="modalidad"]:checked').value,
+        nivel: document.getElementById('nivel').value,
+        duracion: document.getElementById('duracion').value,
+        precio: document.getElementById('precio').value,
+        horario: document.getElementById('horario').value,
+        cupoMaximo: document.getElementById('cupoMaximo').value,
+        materiales: document.getElementById('materiales').value,
+        modulos: document.getElementById('modulos').value,
+        horariosDisponibles: document.getElementById('horariosDisponibles').value,
+        fechaInicio: document.getElementById('fechaInicio').value,
+        fechaFin: document.getElementById('fechaFin').value,
+        direccion: document.getElementById('direccion')?.value || '',
+        requisitos: document.getElementById('requisitos')?.value || '',
+        plataforma: document.getElementById('plataforma')?.value || '',
+        enlaceReunion: document.getElementById('enlaceReunion')?.value || ''
+    };
+    
+    try {
+        const response = await fetch(`/courses/<%= course.id %>`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            mostrarAlerta('Curso actualizado correctamente', 'success');
+            setTimeout(() => {
+                window.location.href = data.redirectUrl;
+            }, 1000);
+        } else {
+            mostrarAlerta(data.error || 'Error al actualizar', 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        mostrarAlerta('Error al guardar los cambios', 'error');
+    } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
+});
+</script>

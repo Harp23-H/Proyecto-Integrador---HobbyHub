@@ -52,7 +52,7 @@ const User = sequelize.define('User', {
         unique: true,
         validate: {
             len: [3, 20],
-            is: /^[a-zA-Z0-9_]+$/
+            is: /^[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*$/
         }
     },
     bio: {
