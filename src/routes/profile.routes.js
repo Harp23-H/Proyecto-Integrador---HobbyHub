@@ -117,7 +117,7 @@ router.get('/me/edit', isAuthenticated, (req, res) => {
 // Procesar edición de perfil
 router.post('/me/edit', isAuthenticated, async (req, res) => {
     try {
-        const { bio, instagram, twitter, tiktok, website, hobbies } = req.body;
+        const { bio, instagram, twitter, tiktok, website, hobbies, fotoPerfil } = req.body;
         
         const user = await User.findByPk(req.user.id);
         
@@ -126,8 +126,8 @@ router.post('/me/edit', isAuthenticated, async (req, res) => {
         if (twitter !== undefined) user.twitter = twitter;
         if (tiktok !== undefined) user.tiktok = tiktok;
         if (website !== undefined) user.website = website;
-        
-        // Procesar hobbies (separados por comas)
+        if (fotoPerfil) user.fotoPerfil = fotoPerfil;
+
         if (hobbies !== undefined) {
             const hobbiesArray = hobbies.split(',').map(h => h.trim()).filter(h => h);
             user.hobbies = hobbiesArray;
@@ -138,7 +138,7 @@ router.post('/me/edit', isAuthenticated, async (req, res) => {
         res.redirect('/profile/me/profile');
         
     } catch (error) {
-        console.error('Error al editar perfil:', error);
+        console.error(error);
         res.render('profile/edit', {
             title: 'Editar Perfil - HobbyHub',
             user: req.user,

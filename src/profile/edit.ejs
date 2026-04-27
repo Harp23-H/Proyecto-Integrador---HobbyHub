@@ -6,8 +6,17 @@
             <div class="space-y-6">
                 <!-- Foto de perfil (opcional - después con Cloudinary) -->
                 <div class="flex items-center gap-4">
-                    <img src="<%= user.fotoPerfil %>" class="w-16 h-16 rounded-full object-cover">
-                    <button type="button" class="text-[#8B5CF6] text-sm">Cambiar foto</button>
+                    <img id="profileImg" src="<%= user.fotoPerfil %>" 
+                         class="w-16 h-16 rounded-full object-cover">
+                
+                    <input type="file" id="profileInput" class="hidden" accept="image/*">
+                
+                    <!-- 👇 hidden para mandar la URL -->
+                    <input type="hidden" name="fotoPerfil" id="fotoPerfilInput" value="<%= user.fotoPerfil %>">
+                
+                    <button type="button" id="changePhotoBtn" class="text-[#8B5CF6] text-sm">
+                        Cambiar foto
+                    </button>
                 </div>
                 
                 <!-- Biografía -->
@@ -82,3 +91,47 @@
     </div>
 </div>
 
+<script>
+    const input = document.getElementById('profileInput');
+    const btn = document.getElementById('changePhotoBtn');
+    const img = document.getElementById('profileImg');
+    const hiddenInput = document.getElementById('fotoPerfilInput');
+    
+    btn.addEventListener('click', () => input.click());
+    
+    input.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+    
+        // Preview inmediato
+        img.src = URL.createObjectURL(file);
+    
+        const formData = new FormData();
+        formData.append('imagen', file);
+    
+        btn.textContent = 'Subiendo...';
+        btn.disabled = true;
+    
+        try {
+            const response = await fetch('/posts/upload', {
+                method: 'POST',
+                body: formData
+            });
+    
+            const data = await response.json();
+    
+            if (data.success) {
+                img.src = data.imageUrl; // URL real
+                hiddenInput.value = data.imageUrl; // 🔥 clave
+            } else {
+                alert('Error al subir imagen');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error en la subida');
+        }
+    
+        btn.textContent = 'Cambiar foto';
+        btn.disabled = false;
+    });
+</script>
