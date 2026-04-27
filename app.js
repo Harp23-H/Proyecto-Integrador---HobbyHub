@@ -78,12 +78,7 @@ app.post('/payments/webhook', express.raw({ type: 'application/json' }), (req, r
 });
 // Ruta principal
 app.get('/', (req, res) => {
-  res.render('feed/explore', { 
-    title: 'Explora por categoría - HobbyHub',
-    popularTags: [],
-    posts: [],
-    user: req.user
-  });
+    res.redirect('/feed/explore')
 });
 
 // Ruta para probar la BD

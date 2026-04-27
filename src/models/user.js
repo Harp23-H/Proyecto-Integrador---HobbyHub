@@ -1,5 +1,5 @@
+const { sequelize } = require('../config/database'); // ✅ correcto
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/database');
 const bcrypt = require('bcryptjs');
 
 const User = sequelize.define('User', {
@@ -216,7 +216,7 @@ User.prototype.nombreCompleto = function() {
 };
 // ===== ASOCIACIONES (AGREGAR ESTO) =====
 // Importar Post después de definir User para evitar ciclo
-const Post = require('./Post');
+/* const Post = require('./Post')
 
 // Un User tiene muchos Posts
 User.hasMany(Post, { 
@@ -236,8 +236,6 @@ const Enrollment = require('./Enrollment');
 User.hasMany(Enrollment, { 
     foreignKey: 'alumnoId', 
     as: 'inscripciones' 
-});
-
-module.exports = User;
+}); */
 
 module.exports = User;

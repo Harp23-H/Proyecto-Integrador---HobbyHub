@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
-const Post = require('../models/Post');
+const { User, Post } = require('../models/associations');
 const { Op } = require('sequelize');
 
 // Middleware para verificar autenticación
