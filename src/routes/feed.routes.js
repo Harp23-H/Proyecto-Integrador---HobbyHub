@@ -18,7 +18,8 @@ router.get('/explore', async (req, res) => {
         const posts = await Post.findAll({
             where: { isActive: true },
             include: [{
-                model: User,  // ← SIN as
+                model: User,
+                as: 'usuario',  // ← SIN as
                 attributes: ['id', 'username', 'nombres', 'apellidos', 'fotoPerfil']
             }],
             order: [['created_at', 'DESC']],
@@ -29,9 +30,9 @@ router.get('/explore', async (req, res) => {
         
         res.render('feed/explore', {
             title: 'Explorar - HobbyHub',
-            user: req.user || null,
-            posts: posts || [],
-            popularTags: popularTags || []
+            user: req.user,
+            posts: posts,
+            popularTags: popularTags
         });
     } catch (error) {
         console.error('Error en explore:', error);
@@ -118,7 +119,8 @@ router.get('/tag/:tag', async (req, res) => {
                 etiquetas: { [Op.like]: `%${tag}%` }
             },
             include: [{
-                model: User,  // ← SIN as
+                model: User,
+                as: 'usuario', 
                 attributes: ['id', 'username', 'nombres', 'apellidos', 'fotoPerfil']
             }],
             order: [['created_at', 'DESC']],

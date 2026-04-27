@@ -1,7 +1,7 @@
 <div class="max-w-6xl mx-auto">
     <!-- Tags populares (sidebar superior) -->
     <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] p-4 mb-6">
-        <h3 class="font-semibold text-[#1E1E1E] mb-3">🔥 Tendencias</h3>
+        <h3 class="font-semibold text-[#1E1E1E] mb-3">Tendencias</h3>
         <div class="flex flex-wrap gap-2">
             <% if (popularTags && popularTags.length > 0) { %>
                 <% popularTags.forEach(tag => { %>
@@ -23,37 +23,37 @@
         <!-- Grid de categorías -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD] rounded-xl p-6 text-white hover:shadow-lg transition cursor-pointer">
-                <h3 class="text-xl font-bold">🎨 Pintura de Miniaturas</h3>
+                <h3 class="text-xl font-bold">Pintura de Miniaturas</h3>
                 <p class="text-sm opacity-90 mt-1">Warhammer, D&D, modelos 3D</p>
                 <span class="inline-block mt-3 text-sm opacity-75">124 publicaciones →</span>
             </div>
             
             <div class="bg-gradient-to-br from-[#1E1E1E] to-[#8B5CF6] rounded-xl p-6 text-white hover:shadow-lg transition cursor-pointer">
-                <h3 class="text-xl font-bold">🎨 Murales & Graffiti</h3>
+                <h3 class="text-xl font-bold">Murales & Graffiti</h3>
                 <p class="text-sm opacity-90 mt-1">Arte urbano, sprays, murales</p>
                 <span class="inline-block mt-3 text-sm opacity-75">89 publicaciones →</span>
             </div>
             
             <div class="bg-gradient-to-br from-[#C4B5FD] to-[#D9D9D9] rounded-xl p-6 text-[#1E1E1E] hover:shadow-lg transition cursor-pointer">
-                <h3 class="text-xl font-bold">🎵 Restauración de Vinilos</h3>
+                <h3 class="text-xl font-bold">Restauración de Vinilos</h3>
                 <p class="text-sm opacity-90 mt-1">Música clásica, tornamesas</p>
                 <span class="inline-block mt-3 text-sm opacity-75">56 publicaciones →</span>
             </div>
             
             <div class="bg-gradient-to-br from-[#8B5CF6] to-[#1E1E1E] rounded-xl p-6 text-white hover:shadow-lg transition cursor-pointer">
-                <h3 class="text-xl font-bold">⌨️ Keycaps Mecánicos</h3>
+                <h3 class="text-xl font-bold">Keycaps Mecánicos</h3>
                 <p class="text-sm opacity-90 mt-1">Teclados personalizados, diseño</p>
                 <span class="inline-block mt-3 text-sm opacity-75">203 publicaciones →</span>
             </div>
             
             <div class="bg-gradient-to-br from-[#8B5CF6] to-[#6B21A5] rounded-xl p-6 text-white hover:shadow-lg transition cursor-pointer">
-                <h3 class="text-xl font-bold">🤖 Cosplay</h3>
+                <h3 class="text-xl font-bold">Cosplay</h3>
                 <p class="text-sm opacity-90 mt-1">Disfraces, convenciones, DIY</p>
                 <span class="inline-block mt-3 text-sm opacity-75">167 publicaciones →</span>
             </div>
             
             <div class="bg-gradient-to-br from-[#1E1E1E] to-[#4C1D95] rounded-xl p-6 text-white hover:shadow-lg transition cursor-pointer">
-                <h3 class="text-xl font-bold"> Terrarios</h3>
+                <h3 class="text-xl font-bold">Terrarios</h3>
                 <p class="text-sm opacity-90 mt-1">Plantas, mini jardines, decoración</p>
                 <span class="inline-block mt-3 text-sm opacity-75">78 publicaciones →</span>
             </div>
@@ -69,24 +69,25 @@
 
     <!-- Publicaciones recientes -->
     <div class="mt-8">
-        <h2 class="text-2xl font-bold text-[#1E1E1E] mb-6">📱 Publicaciones recientes</h2>
+        <h2 class="text-2xl font-bold text-[#1E1E1E] mb-6">Publicaciones recientes</h2>
         
         <% if (posts && posts.length > 0) { %>
-            <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <% posts.forEach(post => { %>
-                    <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] overflow-hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-[#D9D9D9] overflow-hidden hover:shadow-md transition duration-300">
                         <!-- Header del post con botón de reportar -->
+                        <% const user = post.usuario; %>
                         <div class="p-4 flex items-center justify-between border-b border-[#D9D9D9]">
                             <div class="flex items-center gap-3">
-                                <img src="<%= post.usuario ? post.usuario.fotoPerfil : '/images/default-avatar.png' %>" 
+                                <img src="<%= user ? user.fotoPerfil : '/images/default-avatar.png' %>" 
                                      class="w-10 h-10 rounded-full object-cover">
                                 <div>
-                                    <a href="/profile/<%= post.usuario ? post.usuario.username : '#' %>" 
+                                    <a href="/profile/<%= user ? user.username : '#' %>" 
                                        class="font-semibold text-[#1E1E1E] hover:text-[#8B5CF6]">
-                                        <%= post.usuario ? (post.usuario.nombres + ' ' + post.usuario.apellidos) : 'Usuario' %>
+                                        <%= user ? (user.nombres + ' ' + user.apellidos) : 'Usuario' %>
                                     </a>
                                     <p class="text-xs text-[#1E1E1E]/60">
-                                        @<%= post.usuario ? post.usuario.username : 'desconocido' %>
+                                        @<%= user ? user.username : 'desconocido' %>
                                     </p>
                                 </div>
                             </div>
@@ -103,14 +104,19 @@
                                      class="hidden absolute right-0 mt-2 w-48 bg-white border border-[#D9D9D9] rounded-lg shadow-lg z-10">
                                     <a href="/reports/create/publicacion/<%= post.id %>" 
                                        class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg">
-                                        🚨 Reportar publicación
+                                        Reportar publicación
                                     </a>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Imagen del post -->
-                        <img src="<%= post.imagenUrl %>" class="w-full max-h-[500px] object-cover">
+                        <div class="w-full h-64 overflow-hidden bg-gray-100">
+                            <img 
+                              src="<%= post.imagenUrl %>" 
+                              class="w-full h-full object-cover object-center hover:scale-105 transition duration-300"
+                            >
+                        </div>
                         
                         <!-- Contenido del post -->
                         <div class="p-4">
