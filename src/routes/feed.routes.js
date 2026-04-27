@@ -65,6 +65,7 @@ router.get('/home', isAuthenticated, async (req, res) => {
                 },
                 include: [{
                     model: User,  // ← SIN as
+                    as: 'usuario',
                     attributes: ['id', 'username', 'nombres', 'apellidos', 'fotoPerfil']
                 }],
                 order: [['created_at', 'DESC']],

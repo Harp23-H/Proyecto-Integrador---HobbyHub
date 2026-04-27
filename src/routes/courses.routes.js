@@ -3,7 +3,8 @@ const router = express.Router();
 const Course = require('../models/Course');
 const User = require('../models/User');
 const { sequelize } = require('../config/database');
-const { upload } = require('../config/cloudinary');
+const upload = require('../config/multer');
+const cloudinary = require('../config/cloudinary');
 
 // Middleware para verificar autenticación
 const isAuthenticated = (req, res, next) => {

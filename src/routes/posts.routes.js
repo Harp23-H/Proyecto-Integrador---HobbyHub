@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { upload } = require('../config/cloudinary');
+const upload = require('../config/multer');
+const cloudinary = require('../config/cloudinary');
 const Post = require('../models/Post');
 const { sequelize } = require('../config/database');
 
@@ -70,7 +71,7 @@ router.get('/:id', async (req, res) => {
 // ===== API ENDPOINTS =====
 
 // Subir imagen a Cloudinary (Página 10)
-router.post('/upload', isAuthenticated, upload.single('imagen'), (req, res) => {
+/* router.post('/upload', isAuthenticated, upload.single('imagen'), (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ error: 'No se subió ninguna imagen' });
@@ -81,6 +82,36 @@ router.post('/upload', isAuthenticated, upload.single('imagen'), (req, res) => {
             imageUrl: req.file.path,
             imagePublicId: req.file.filename
         });
+    } catch (error) {
+        console.error('Error al subir imagen:', error);
+        res.status(500).json({ error: 'Error al subir la imagen' });
+    }
+}); */
+
+router.post('/upload', isAuthenticated, upload.single('imagen'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No se subió ninguna imagen' });
+        }
+
+        const result = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+                { folder: 'hobbyhub/posts' },
+                (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result);
+                }
+            );
+
+            stream.end(req.file.buffer); // 🔥 ahora sí existe
+        });
+
+        res.json({
+            success: true,
+            imageUrl: result.secure_url,
+            imagePublicId: result.public_id
+        });
+
     } catch (error) {
         console.error('Error al subir imagen:', error);
         res.status(500).json({ error: 'Error al subir la imagen' });
